@@ -59,7 +59,7 @@ const useDynamicMutation = ({
         variables.onError(error);
       }
       const errorMessage =
-        (error as any)?.response?.data?.message ||
+        (error as any)?.response?.data?.detail ||
         (error as any)?.response?.data?.error;
       const isString = typeof errorMessage === "string";
       const errors = (error as any)?.response?.data?.error?.message;

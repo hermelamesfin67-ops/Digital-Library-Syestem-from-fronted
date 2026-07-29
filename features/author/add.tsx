@@ -6,23 +6,11 @@ import { Button } from "@/components/ui/button"
 import { DialogClose } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { createBookSchema, CreateBookSchemaType, editBookSchema } from "@/validation/book.schema"
-import { useQueryClient } from "@tanstack/react-query"
+import { createBookSchema, CreateBookSchemaType } from "@/validation/book.schema"
 import { Formik, Form, ErrorMessage } from "formik"
 import { Loader2 } from "lucide-react"
 
-type Props = {
-    id?: string,
-    title?: string,
-    author?: string,
-    category?: string,
-    total_copies?: string,
-    available_copies?: string,
-    image?: string
-    setIsOpen: (arg: boolean) => void
-}
-function AddBook({ id, title, author, category, available_copies, total_copies, image, setIsOpen }: Props) {
-    const queryClient = useQueryClient()
+function AddAuthor({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
     const postMutation = useDynamicMutation({ type: "FormData" })
 
     const authorData = useFetchData(
@@ -45,21 +33,19 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
     })) : []
 
     const bookHandler = async (values: CreateBookSchemaType) => {
-
         try {
             await postMutation.mutateAsync({
-                url: id ? `${queryKeys.getAllBooks}${id}/` : queryKeys.getAllBooks,
-                method: id ? "PATCH" : "POST",
+                url: queryKeys.getAllBooks,
+                method: "POST",
                 body: {
                     title: values.title,
                     author_name: values.author,
-                    category_name: categories?.find((i) => i.value?.toString() === values.category?.toString())?.label,
+                    category_name: values.category,
                     total_copies: values.total_copies,
                     available_copies: values.available_copies,
                     image: values.image
                 },
                 onSuccess: () => {
-                    queryClient.invalidateQueries({ queryKey: [queryKeys.getAllBooks, id] })
                     setIsOpen(false)
                 },
             });
@@ -72,18 +58,17 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
     return (
         <Formik
             initialValues={{
-                title: title ?? "",
-                author: author ?? "",
-                category: category ?? "",
-                total_copies: total_copies ?? "",
-                available_copies: available_copies ?? "",
+                title: "",
+                author: "",
+                category: "",
+                total_copies: "",
+                available_copies: "",
                 image: "" as unknown as File
             }}
-            validationSchema={id ? editBookSchema : createBookSchema}
+            validationSchema={createBookSchema}
             onSubmit={(val) => bookHandler(val)}
         >
             {({ values, setFieldValue }) => {
-                // console.log(values)
                 return (
                     <Form className="flex flex-col gap-3 p-5">
                         <p>Add Book Form</p>
@@ -107,7 +92,7 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
                             <p className="mb-1">
                                 Author
                             </p>
-                            <Select items={authors} value={values.author}>
+                            <Select items={authors}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select Author" />
                                 </SelectTrigger>
@@ -131,7 +116,7 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
                             <p className="mb-1">
                                 Category
                             </p>
-                            <Select items={categories} value={values.category}>
+                            <Select items={categories}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select Category" />
                                 </SelectTrigger>
@@ -226,4 +211,4 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
     )
 }
 
-export default AddBook
+export default AddAuthor

@@ -127,4 +127,7 @@
   html {
     @apply font-sans;
   }
+  .bg-gradient {
+    @apply bg-linear-to-r from-red-500 to-black text-white text-sm;
+  }
 }

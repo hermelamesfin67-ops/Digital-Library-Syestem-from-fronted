@@ -1,21 +1,20 @@
 "use client"
 import Image from "next/image"
 import BookLoader from "@/components/shared/book-loader";
-import Link from "next/link";
 import { queryKeys } from "@/api/query-keys";
 import { useFetchData } from "@/api/use-fetch-data";
 import PageHeader from "@/components/shared/page-header";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import AddBook from "./add";
+import AddCategory from "./add";
 import { useState } from "react";
 
-function AllBooks() {
+function AllCategories() {
     const [isOpen, setIsOpen] = useState(false)
-    const booksData = useFetchData(
-        [queryKeys.getAllBooks],
-        queryKeys.getAllBooks
+    const categoriesData = useFetchData(
+        [queryKeys.getAllCategories],
+        queryKeys.getAllCategories
     )
-    const books: Book[] = booksData.data
+    const books: Book[] = categoriesData.data
 
     return (
         <div className="flex flex-col gap-4">
@@ -23,10 +22,10 @@ function AllBooks() {
 
                 <Dialog open={isOpen} onOpenChange={setIsOpen}>
                     <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
-                        Add Book
+                        Add Category
                     </DialogTrigger>
                     <DialogContent className={"min-w-lg w-full"}>
-                        <AddBook setIsOpen={setIsOpen}/>
+                        <AddCategory setIsOpen={setIsOpen} />
                     </DialogContent>
                 </Dialog>
             </PageHeader>
@@ -35,15 +34,13 @@ function AllBooks() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
                 {
-                    booksData.isFetching ?
+                    categoriesData.isFetching ?
                         Array(20).fill(0).map((_, i) => (
                             <BookLoader key={i} />
                         ))
                         : books?.length ?
                             books?.map((b) => (
-                                <Link
-                                    href={`/books/${b.id}`}
-                                    key={b.id} className="flex flex-col gap-1.5">
+                                <div key={b.id} className="flex flex-col gap-1.5">
                                     <Image src={b?.image || "/book1.png"} alt="book"
                                         width={100}
                                         height={100}
@@ -52,13 +49,13 @@ function AllBooks() {
                                     <p className="capitalize text-sm font-normal">
                                         {b?.title}
                                     </p>
-                                </Link>
+                                </div>
                             ))
-                            : "No Book Found!"
+                            : "No Category Found!"
                 }
             </div>
         </div>
     )
 }
 
-export default AllBooks
+export default AllCategories

@@ -1,3 +1,4 @@
+import BookDetails from "@/features/book/details"
 
 
 type props = {
@@ -6,9 +7,7 @@ type props = {
 async function page({ params }: props) {
     const id = (await params).slug
     return (
-        <div className="h-screen">
-            Book {id} Detail
-        </div>
+        <BookDetails id={id}/>
     )
 }
 

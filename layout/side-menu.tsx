@@ -14,8 +14,8 @@ import { usePathname } from "next/navigation"
 const projects = [
     { name: "Dashboard", url: "/" },
     { name: "All Books", url: "/books" },
-    { name: "Categories", url: "" },
-    { name: "Authors", url: "" },
+    { name: "Categories", url: "/categories" },
+    { name: "Authors", url: "/authors" },
     { name: "Borrow", url: "" },
 ]
 export function AppSidebar() {
