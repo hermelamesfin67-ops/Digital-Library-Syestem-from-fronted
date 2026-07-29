@@ -6,11 +6,22 @@ import { Button } from "@/components/ui/button"
 import { DialogClose } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { hasObjectsDifferentValues } from "@/utils"
 import { createBookSchema, CreateBookSchemaType, editBookSchema } from "@/validation/book.schema"
 import { useQueryClient } from "@tanstack/react-query"
 import { Formik, Form, ErrorMessage } from "formik"
 import { Loader2 } from "lucide-react"
+import Image from "next/image"
+import { toast } from "sonner"
 
+type PayloadType = {
+    title: string,
+    author_name: string,
+    category_name?: string,
+    total_copies: string,
+    available_copies: string,
+    image?: File
+}
 type Props = {
     id?: string,
     title?: string,
@@ -44,22 +55,37 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
         value: a?.id
     })) : []
 
-    const bookHandler = async (values: CreateBookSchemaType) => {
 
+    const initialValues = {
+        title: title ?? "",
+        author: author ?? "",
+        category: category ?? "",
+        total_copies: total_copies ?? "",
+        available_copies: available_copies ?? "",
+        image: "" as unknown as File
+    }
+
+    const bookHandler = async (values: CreateBookSchemaType) => {
+        console.log(values.category)
+        const payload: PayloadType = {
+            title: values.title,
+            author_name: values.author,
+            category_name: values.category,
+            total_copies: values.total_copies,
+            available_copies: values.available_copies,
+
+        }
+        if (values.image) {
+            payload["image"] = values.image as unknown as File
+        }
         try {
             await postMutation.mutateAsync({
                 url: id ? `${queryKeys.getAllBooks}${id}/` : queryKeys.getAllBooks,
                 method: id ? "PATCH" : "POST",
-                body: {
-                    title: values.title,
-                    author_name: values.author,
-                    category_name: categories?.find((i) => i.value?.toString() === values.category?.toString())?.label,
-                    total_copies: values.total_copies,
-                    available_copies: values.available_copies,
-                    image: values.image
-                },
+                body: payload,
                 onSuccess: () => {
-                    queryClient.invalidateQueries({ queryKey: [queryKeys.getAllBooks, id] })
+                    toast.success(id ? "Book Updated Successfully" : "Book Added Successfully")
+                    queryClient.invalidateQueries({ queryKey: [queryKeys.getAllBooks] })
                     setIsOpen(false)
                 },
             });
@@ -71,22 +97,20 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
     if (authorData.isFetching || categoryData.isFetching) return <Loader2 className="animate-spin" />
     return (
         <Formik
-            initialValues={{
-                title: title ?? "",
-                author: author ?? "",
-                category: category ?? "",
-                total_copies: total_copies ?? "",
-                available_copies: available_copies ?? "",
-                image: "" as unknown as File
-            }}
+            initialValues={initialValues}
             validationSchema={id ? editBookSchema : createBookSchema}
-            onSubmit={(val) => bookHandler(val)}
+            onSubmit={(val) => {
+                if (!val.image && !hasObjectsDifferentValues(val, initialValues)) {
+                    toast.warning("No changes applied!");
+                    return;
+                }
+                bookHandler(val)
+            }}
         >
             {({ values, setFieldValue }) => {
-                // console.log(values)
                 return (
                     <Form className="flex flex-col gap-3 p-5">
-                        <p>Add Book Form</p>
+                        <p className="text-lg font-semibold">Add Book Form</p>
                         <div>
                             <p className="mb-1">
                                 Title
@@ -197,6 +221,13 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
                                 onChange={(e) => setFieldValue("image", e.currentTarget.files?.[0] || null)}
                                 placeholder="Book Cover"
                             />
+                            {!values.image && image ?
+                                <Image
+                                    width={100}
+                                    height={100}
+                                    src={image} alt="book cover" className="w-12 h-12"
+                                />
+                                : null}
                             <ErrorMessage
                                 name={"image"}
                                 component="div"
@@ -206,14 +237,15 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
 
                         <div className="grid grid-cols-2 gap-3 mt-5">
                             <DialogClose className={"border rounded-md"}>
-                                <button type="button" className="w-full h-full">
+                                <Button variant={"secondary"} className="w-full h-full cursor-pointer">
                                     Cancel
-                                </button>
+                                </Button>
                             </DialogClose>
                             <Button
                                 type="submit"
+                                variant={"primary"}
                                 disabled={postMutation.isPending}
-                                className={"bg-gradient"}>
+                            >
                                 {postMutation.isPending ? "Submitting..." : "Submit"}
                             </Button>
                         </div>

@@ -4,9 +4,9 @@ import { queryKeys } from "@/api/query-keys"
 import { useFetchData } from "@/api/use-fetch-data"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import Image from "next/image"
 import AddBook from "./add"
 import { useState } from "react"
+import { Loader2, PencilIcon } from "lucide-react"
 
 function BookDetails({ id }: { id: string }) {
     const [isOpen, setIsOpen] = useState(false)
@@ -15,18 +15,20 @@ function BookDetails({ id }: { id: string }) {
         `${queryKeys.getAllBooks}${id}`
     )
     const book: Book = booksData.data
+    if (booksData.isFetching) return <Loader2 className="animate-spin" />
+
     return (
         <div className="mx-auto max-w-4xl w-full">
             <div className="flex gap-5">
-                <Image
-                    src={book?.image}
-                    alt={book?.title}
-                    width={100}
-                    height={100}
-                    quality={100}
-                    priority
-                    className="h-48 w-auto object-contain flex items-center justify-center"
-                />
+                { // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                        loading="lazy"
+                        src={book?.image || "/book1.png"}
+                        alt={book?.title}
+                        width={100}
+                        height={100}
+                        className="h-48 w-48 object-cover flex items-center justify-center"
+                    />}
                 <div className="flex flex-col gap-3">
                     <div className="flex justify-between items-center gap-1.5">
                         <div className="leading-3">
@@ -34,15 +36,18 @@ function BookDetails({ id }: { id: string }) {
                             <h2 className="font-bold text-xl">{book?.title}</h2>
                         </div>
                         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                            <DialogTrigger className={"bg-gradient p-1 px-2 text-xs rounded-md hover:cursor-pointer focus:cursor-pointer"}>
-                                Edit Book
+                            <DialogTrigger>
+                                <Button size={"sm"} variant="primary">
+                                    <PencilIcon />
+                                    Edit
+                                </Button>
                             </DialogTrigger>
                             <DialogContent className={"min-w-lg w-full"}>
                                 <AddBook
                                     id={book?.id}
                                     title={book?.title}
-                                    author={book?.author_display}
-                                    category={book?.category_display}
+                                    author={book?.author_name}
+                                    category={book?.category_name}
                                     total_copies={book?.total_copies}
                                     available_copies={book?.available_copies}
                                     image={book?.image}
@@ -66,7 +71,7 @@ function BookDetails({ id }: { id: string }) {
                     </div>
                     <div>
 
-                        <Button>Borrow</Button>
+                        <Button variant={"secondary"}>Borrow</Button>
                     </div>
                 </div>
             </div>

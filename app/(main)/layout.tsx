@@ -26,7 +26,7 @@ export default function Layout({
       </section>
       <div className="flex flex-col gap-1 h-full flex-1">
         <Header />
-        <section className="p-3">
+        <section className="p-5">
           {children}
         </section>
       </div>

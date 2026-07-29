@@ -34,7 +34,7 @@ function SingIn() {
   };
   return (
     <div className="flex items-center justify-center h-screen w-full">
-      <div className="flex flex-col gap-3 max-w-md w-full mx-auto p-5 border rounded-lg">
+      <div className="flex flex-col gap-3 max-w-md w-full mx-auto p-10 border rounded-lg">
         <div className="flex items-center justify-center gap-1 font-bold text-sm">
           <BookImageIcon />
           Digital Library
@@ -87,6 +87,7 @@ function SingIn() {
                 </div>
                 <div className="grid gap-3 mt-5">
                   <Button
+                    size={"lg"}
                     type="submit"
                     disabled={postMutation.isPending}
                     className={"bg-gradient"}>

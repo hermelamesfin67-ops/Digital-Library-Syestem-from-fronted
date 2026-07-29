@@ -191,9 +191,9 @@ function AddAuthor({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
 
                         <div className="grid grid-cols-2 gap-3 mt-5">
                             <DialogClose className={"border rounded-md"}>
-                                <button type="button" className="w-full h-full">
+                                <div className="w-full h-full">
                                     Cancel
-                                </button>
+                                </div>
                             </DialogClose>
                             <Button
                                 type="submit"

@@ -26,14 +26,14 @@ function AllBooks() {
                         Add Book
                     </DialogTrigger>
                     <DialogContent className={"min-w-lg w-full"}>
-                        <AddBook setIsOpen={setIsOpen}/>
+                        <AddBook setIsOpen={setIsOpen} />
                     </DialogContent>
                 </Dialog>
             </PageHeader>
 
             All Books
 
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-5">
                 {
                     booksData.isFetching ?
                         Array(20).fill(0).map((_, i) => (
@@ -43,11 +43,11 @@ function AllBooks() {
                             books?.map((b) => (
                                 <Link
                                     href={`/books/${b.id}`}
-                                    key={b.id} className="flex flex-col gap-1.5">
+                                    key={b.id} className="flex flex-col gap-1.5 p-5 bg-white shadow hover:shadow-md rounded-md">
                                     <Image src={b?.image || "/book1.png"} alt="book"
                                         width={100}
                                         height={100}
-                                        className="w-full h-48 object-cover"
+                                        className="w-full h-48 object-cover hover:scale-105"
                                     />
                                     <p className="capitalize text-sm font-normal">
                                         {b?.title}
