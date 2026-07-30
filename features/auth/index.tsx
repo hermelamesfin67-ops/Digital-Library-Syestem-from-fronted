@@ -90,7 +90,8 @@ function SingIn() {
                     size={"lg"}
                     type="submit"
                     disabled={postMutation.isPending}
-                    className={"bg-gradient"}>
+                    variant={"primary"}
+                  >
                     {postMutation.isPending ? "Loading..." : "Login"}
                   </Button>
                 </div>

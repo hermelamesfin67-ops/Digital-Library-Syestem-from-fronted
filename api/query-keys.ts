@@ -1,5 +1,5 @@
 export const queryKeys = {
-  getAllBooks: "api/books/",
+  getAllBooks: "getAllBooksApi",
   getAllAuthors: "api/authors/",
   getAllCategories: "api/categories/",
 };

@@ -4,7 +4,7 @@ import { queryKeys } from "@/api/query-keys"
 import { useFetchData } from "@/api/use-fetch-data"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import AddBook from "./add"
+import AddBook from "../books-management/add"
 import { useState } from "react"
 import { Loader2, PencilIcon } from "lucide-react"
 
@@ -35,26 +35,6 @@ function BookDetails({ id }: { id: string }) {
                             <span className="text-xs text-[#626262]">Book</span>
                             <h2 className="font-bold text-xl">{book?.title}</h2>
                         </div>
-                        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                            <DialogTrigger>
-                                <Button size={"sm"} variant="primary">
-                                    <PencilIcon />
-                                    Edit
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className={"min-w-lg w-full"}>
-                                <AddBook
-                                    id={book?.id}
-                                    title={book?.title}
-                                    author={book?.author_name}
-                                    category={book?.category_name}
-                                    total_copies={book?.total_copies}
-                                    available_copies={book?.available_copies}
-                                    image={book?.image}
-                                    setIsOpen={setIsOpen}
-                                />
-                            </DialogContent>
-                        </Dialog>
                     </div>
                     <div className="grid md:grid-cols-2 justify-between gap-5">
                         <div>

@@ -11,7 +11,7 @@ const SignOut = () => {
         please try again!{" "}
       </p>
       <Link href={routes.signIn} className="">
-        <Button id="backToHome">
+        <Button id="backToHome" variant={"primary"}>
           Back To SignIn
         </Button>
       </Link>

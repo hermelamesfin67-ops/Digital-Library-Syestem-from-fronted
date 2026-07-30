@@ -83,7 +83,8 @@ function AddCategory({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
                             <Button
                                 type="submit"
                                 disabled={postMutation.isPending}
-                                className={"bg-gradient"}>
+                                variant={"primary"}
+                            >
                                 {postMutation.isPending ? "Submitting..." : "Submit"}
                             </Button>
                         </div>

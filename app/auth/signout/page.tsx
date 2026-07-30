@@ -9,7 +9,7 @@ const SignOut = () => {
       <h3>Session Expired!</h3>
       <p>Your session is expired, please login again to access the portal! </p>
       <Link href={routes.signIn} className="">
-        <Button id="signOut">
+        <Button id="signOut" variant={"primary"}>
           Sign Out
         </Button>
       </Link>

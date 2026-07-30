@@ -8,18 +8,25 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { BookImageIcon } from "lucide-react"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-const projects = [
-    { name: "Dashboard", url: "/" },
-    { name: "All Books", url: "/books" },
-    { name: "Categories", url: "/categories" },
-    { name: "Authors", url: "/authors" },
-    { name: "Borrow", url: "" },
+const menus = [
+    { name: "Dashboard", url: "/", permission: ["Super Admin", "librarian", "Student"] },
+    { name: "Books Management", url: "/books-management", permission: ["Super Admin", "librarian"] },
+    { name: "All Books", url: "/books", permission: ["Student"] },
+    { name: "Categories", url: "/categories", permission: ["Super Admin", "librarian"] },
+    { name: "Authors", url: "/authors", permission: ["Super Admin", "librarian"] },
+    { name: "Borrows", url: "", permission: ["Super Admin", "librarian", "Student"] },
 ]
 export function AppSidebar() {
+    const { data: session } = useSession()
+    const role = session?.user?.user?.role || ""
 
+    const filteredMenus = () => {
+        return menus.filter((menu) => menu.permission.includes(role))
+    }
     const pathName = usePathname()
     return (
         <Sidebar>
@@ -30,7 +37,7 @@ export function AppSidebar() {
                 </div>
             </SidebarHeader>
             <SidebarMenu>
-                {projects.map((project) => (
+                {filteredMenus()?.map((project) => (
                     <SidebarMenuItem key={project.name}>
                         <SidebarMenuButton isActive={pathName === project.url} >
                             <Link href={project.url} className="w-full h-full">

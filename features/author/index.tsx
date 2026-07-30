@@ -14,7 +14,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import Image from "next/image";
+import ImagePreview from "../shared/image";
 
 function AllAuthors() {
     const [isOpen, setIsOpen] = useState(false)
@@ -57,7 +57,7 @@ function AllAuthors() {
                             <TableCell>
                                 <div className="flex items-center gap-1.5">
                                     {author?.name}
-                                    <Image src={author?.image} alt={author?.name} className="w-10 h-10" />
+                                    <ImagePreview src={author?.image} alt={author?.name} className="w-10 h-10" />
                                 </div>
                             </TableCell>
                             <TableCell>{author?.biography}</TableCell>

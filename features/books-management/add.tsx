@@ -11,8 +11,8 @@ import { createBookSchema, CreateBookSchemaType, editBookSchema } from "@/valida
 import { useQueryClient } from "@tanstack/react-query"
 import { Formik, Form, ErrorMessage } from "formik"
 import { Loader2 } from "lucide-react"
-import Image from "next/image"
 import { toast } from "sonner"
+import ImagePreview from "../shared/image"
 
 type PayloadType = {
     title: string,
@@ -222,7 +222,7 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
                                 placeholder="Book Cover"
                             />
                             {!values.image && image ?
-                                <Image
+                                <ImagePreview
                                     width={100}
                                     height={100}
                                     src={image} alt="book cover" className="w-12 h-12"

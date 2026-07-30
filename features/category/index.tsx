@@ -1,5 +1,4 @@
 "use client"
-import Image from "next/image"
 import BookLoader from "@/components/shared/book-loader";
 import { queryKeys } from "@/api/query-keys";
 import { useFetchData } from "@/api/use-fetch-data";
@@ -7,6 +6,7 @@ import PageHeader from "@/components/shared/page-header";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AddCategory from "./add";
 import { useState } from "react";
+import ImagePreview from "../shared/image";
 
 function AllCategories() {
     const [isOpen, setIsOpen] = useState(false)
@@ -41,7 +41,7 @@ function AllCategories() {
                         : books?.length ?
                             books?.map((b) => (
                                 <div key={b.id} className="flex flex-col gap-1.5">
-                                    <Image src={b?.image || "/book1.png"} alt="book"
+                                    <ImagePreview src={b?.image || "/book1.png"} alt="book"
                                         width={100}
                                         height={100}
                                         className="w-full h-48 object-cover"
