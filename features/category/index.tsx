@@ -36,7 +36,7 @@ function AllCategories() {
                         <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
                             Add Category
                         </DialogTrigger>
-                        <DialogContent className={"min-w-lg w-full"}>
+                        <DialogContent className={"md:min-w-lg w-full"}>
                             <AddCategory setEditingCategoryId={setEditingCategoryId} setIsOpen={setIsEditOpen} />
                         </DialogContent>
                     </Dialog>
@@ -86,7 +86,7 @@ function AllCategories() {
                                                         <PencilIcon size={15} /> Edit
                                                     </div>
                                                 </DialogTrigger>
-                                                <DialogContent className={"min-w-lg w-full"}>
+                                                <DialogContent className={"md:min-w-lg w-full"}>
                                                     <AddCategory
                                                         key={cat?.id}
                                                         name={cat?.name}
@@ -104,7 +104,7 @@ function AllCategories() {
                                                         <DeleteIcon size={15} /> Delete
                                                     </div>
                                                 </DialogTrigger>
-                                                <DialogContent className={"min-w-lg w-full"}>
+                                                <DialogContent className={"md:min-w-lg w-full"}>
                                                     <ConfirmationModal
                                                         title="Delete this Category"
                                                         description={`${cat?.name}`}

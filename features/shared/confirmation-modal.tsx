@@ -58,7 +58,7 @@ const ConfirmationModal = ({
 
             <div className="grid md:grid-cols-2 gap-3 mt-5 w-full">
                 <DialogClose className={"border rounded-md"}>
-                    <Button variant={"secondary"} size={"lg"} className="w-full h-full cursor-pointer">
+                    <Button variant={"secondary"} size={"lg"} className="w-full h-full cursor-pointer py-1.5">
                         Cancel
                     </Button>
                 </DialogClose>
@@ -68,6 +68,7 @@ const ConfirmationModal = ({
                     variant={"primary"}
                     size={"lg"}
                     disabled={postMutation.isPending}
+                    className={"py-1.5"}
                 >
                     {postMutation.isPending ? "Submitting..." : "Submit"}
                 </Button>

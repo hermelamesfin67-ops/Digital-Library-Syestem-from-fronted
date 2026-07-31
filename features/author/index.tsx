@@ -40,7 +40,7 @@ function AllAuthors() {
                         <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
                             Add Author
                         </DialogTrigger>
-                        <DialogContent className={"min-w-lg w-full"}>
+                        <DialogContent className={"md:min-w-lg w-full"}>
                             <AddAuthor setEditingAuthorId={setEditingAuthorId} setIsOpen={setIsOpen} />
                         </DialogContent>
                     </Dialog>}
@@ -90,7 +90,7 @@ function AllAuthors() {
                                                         <PencilIcon size={15} />
                                                     </div>
                                                 </DialogTrigger>
-                                                <DialogContent className={"min-w-lg w-full"}>
+                                                <DialogContent className={"md:min-w-lg w-full"}>
                                                     <AddAuthor
                                                         key={author?.id}
                                                         id={author?.id}

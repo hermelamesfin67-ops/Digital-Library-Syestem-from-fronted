@@ -118,7 +118,7 @@ function AddCategory({ id, name, description, setIsOpen, setEditingCategoryId }:
 
                         <div className="grid md:grid-cols-2 gap-3 mt-5">
                             <DialogClose className={"border rounded-md"}>
-                                <button type="button" className="w-full h-full">
+                                <button type="button" className="w-full h-full py-1.5">
                                     Cancel
                                 </button>
                             </DialogClose>
@@ -126,6 +126,7 @@ function AddCategory({ id, name, description, setIsOpen, setEditingCategoryId }:
                                 type="submit"
                                 disabled={postMutation.isPending}
                                 variant={"primary"}
+                                className={"py-1.5"}
                             >
                                 {postMutation.isPending ? "Submitting..." : "Submit"}
                             </Button>

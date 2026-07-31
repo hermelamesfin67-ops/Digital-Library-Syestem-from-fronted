@@ -37,7 +37,7 @@ function BooksManagement() {
                         <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
                             Add Book
                         </DialogTrigger>
-                        <DialogContent className={"min-w-lg w-full"}>
+                        <DialogContent className={"md:min-w-lg w-full"}>
                             <AddBook setEditingBookId={setEditingBookId} setIsOpen={setIsEditOpen} />
                         </DialogContent>
                     </Dialog>
@@ -93,7 +93,7 @@ function BooksManagement() {
                                                         <PencilIcon size={15} /> Edit
                                                     </div>
                                                 </DialogTrigger>
-                                                <DialogContent className={"min-w-lg w-full"}>
+                                                <DialogContent className={"md:min-w-lg w-full"}>
                                                     <AddBook
                                                         key={b?.id}
                                                         id={b?.id}
@@ -115,7 +115,7 @@ function BooksManagement() {
                                                         <DeleteIcon size={15} /> Delete
                                                     </div>
                                                 </DialogTrigger>
-                                                <DialogContent className={"min-w-lg w-full"}>
+                                                <DialogContent className={"md:min-w-lg w-full"}>
                                                     <ConfirmationModal
                                                         title="Delete this book"
                                                         description={`${b?.title}`}

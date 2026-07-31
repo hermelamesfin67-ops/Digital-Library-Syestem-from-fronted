@@ -151,7 +151,7 @@ function AddAuthor({ id, name, biography, book_count, image, setIsOpen, setEditi
 
                         <div className="grid md:grid-cols-2 gap-3 mt-5">
                             <DialogClose className={"border rounded-md"}>
-                                <Button variant={"secondary"} className="w-full h-full cursor-pointer">
+                                <Button variant={"secondary"} className="w-full h-full cursor-pointer  py-1.5">
                                     Cancel
                                 </Button>
                             </DialogClose>
@@ -159,6 +159,7 @@ function AddAuthor({ id, name, biography, book_count, image, setIsOpen, setEditi
                                 type="submit"
                                 variant={"primary"}
                                 disabled={postMutation.isPending}
+                                className={"py-1.5"}
                             >
                                 {postMutation.isPending ? "Submitting..." : "Submit"}
                             </Button>
