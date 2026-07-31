@@ -56,7 +56,7 @@ const ConfirmationModal = ({
                 <p className="font-normal text-center">{description}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 mt-5 w-full">
+            <div className="grid md:grid-cols-2 gap-3 mt-5 w-full">
                 <DialogClose className={"border rounded-md"}>
                     <Button variant={"secondary"} size={"lg"} className="w-full h-full cursor-pointer">
                         Cancel

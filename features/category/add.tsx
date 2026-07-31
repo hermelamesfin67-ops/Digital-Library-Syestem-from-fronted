@@ -116,7 +116,7 @@ function AddCategory({ id, name, description, setIsOpen, setEditingCategoryId }:
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-3 mt-5">
+                        <div className="grid md:grid-cols-2 gap-3 mt-5">
                             <DialogClose className={"border rounded-md"}>
                                 <button type="button" className="w-full h-full">
                                     Cancel

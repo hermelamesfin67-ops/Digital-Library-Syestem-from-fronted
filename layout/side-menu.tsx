@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-const menus = [
+export const menus = [
     { name: "Dashboard", url: "/", permission: ["super admin", "librarian", "student"] },
     { name: "Books Management", url: "/books-management", permission: ["super admin", "librarian"] },
     { name: "All Books", url: "/books", permission: ["student"] },

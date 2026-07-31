@@ -46,7 +46,7 @@ function BooksManagement() {
 
             Books Management
 
-            <div className="grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 lg:gap-5">
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 lg:gap-5">
                 {
                     booksData.isFetching ?
                         Array(20).fill(0).map((_, i) => (
@@ -75,7 +75,7 @@ function BooksManagement() {
                                     </Link>
 
                                     {role === ROLE.librarian &&
-                                        <div className="grid grid-cols-2 text-sm">
+                                        <div className="grid md:grid-cols-2 text-sm">
 
                                             <Dialog
                                                 open={isEditOpen && editingBookId === b.id}
@@ -89,7 +89,7 @@ function BooksManagement() {
                                                     }
                                                 }}>
                                                 <DialogTrigger>
-                                                    <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-[#e2e2e6] cursor-pointer">
+                                                    <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-gray-100 cursor-pointer">
                                                         <PencilIcon size={15} /> Edit
                                                     </div>
                                                 </DialogTrigger>
@@ -111,7 +111,7 @@ function BooksManagement() {
 
                                             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                                                 <DialogTrigger>
-                                                    <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-[#e2e2e6] cursor-pointer">
+                                                    <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-gray-100 cursor-pointer">
                                                         <DeleteIcon size={15} /> Delete
                                                     </div>
                                                 </DialogTrigger>

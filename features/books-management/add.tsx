@@ -177,7 +177,7 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
                                 className={"text-xs text-red-500 pt-1 font-medium"}
                             />
                         </div>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid md:grid-cols-2 gap-3">
                             <div>
                                 <p className="mb-1">
                                     Total Copies
@@ -237,7 +237,7 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-3 mt-5">
+                        <div className="grid md:grid-cols-2 gap-3 mt-5">
                             <DialogClose className={"border rounded-md"}>
                                 <Button variant={"secondary"} className="w-full h-full cursor-pointer">
                                     Cancel

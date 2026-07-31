@@ -19,7 +19,7 @@ const buttonVariants = cva(
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
         primary:
-          "bg-[#8DC63F] text-white hover:bg-[#8ec63fe3] focus:bg-[#8DC63F] cursor-pointer",
+          "bg-[#8DC63F] text-white hover:bg-[#8ec63fe3] focus:bg-[#8DC63F] cursor-pointer max-w-sm w-full",
         secondary: "bg-[#B2212A] text-white cursor-pointer"
       },
       size: {

@@ -149,7 +149,7 @@ function AddAuthor({ id, name, biography, book_count, image, setIsOpen, setEditi
 
 
 
-                        <div className="grid grid-cols-2 gap-3 mt-5">
+                        <div className="grid md:grid-cols-2 gap-3 mt-5">
                             <DialogClose className={"border rounded-md"}>
                                 <Button variant={"secondary"} className="w-full h-full cursor-pointer">
                                     Cancel
