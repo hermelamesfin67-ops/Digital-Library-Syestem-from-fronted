@@ -34,7 +34,7 @@ function SingIn() {
   };
   return (
     <div className="flex items-center justify-center h-screen w-full">
-      <div className="flex flex-col gap-3 max-w-md w-full mx-auto p-10 border rounded-lg">
+      <div className="flex flex-col gap-3 max-w-md w-full mx-auto p-10 border border-amber-50 rounded-lg">
         <div className="flex items-center justify-center gap-1 font-bold text-sm">
           <BookImageIcon />
           Digital Library
@@ -75,6 +75,7 @@ function SingIn() {
                   </p>
                   <Input
                     name="password"
+                    type="password"
                     value={values.password}
                     onChange={(e) => setFieldValue("password", e.target.value)}
                     placeholder="Enter Password"

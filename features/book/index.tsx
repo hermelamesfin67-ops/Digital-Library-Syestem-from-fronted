@@ -9,7 +9,7 @@ import ImagePreview from "../shared/image";
 function AllBooks() {
     const booksData = useFetchData(
         [queryKeys.getAllBooks],
-        queryKeys.getAllBooks
+        "api/books/"
     )
     const books: Book[] = booksData.data
 

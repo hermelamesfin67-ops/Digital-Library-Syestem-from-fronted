@@ -15,7 +15,7 @@ function AddAuthor({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
 
     const authorData = useFetchData(
         [queryKeys.getAllAuthors],
-        queryKeys.getAllAuthors
+        "api/authors/"
     )
     const authorsList: Authors[] = authorData.data
     const authors = authorsList ? authorsList?.map((a) => ({
@@ -24,7 +24,7 @@ function AddAuthor({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
     })) : []
     const categoryData = useFetchData(
         [queryKeys.getAllCategories],
-        queryKeys.getAllCategories
+        "api/categories"
     )
     const categoryList: Categories[] = categoryData.data
     const categories = categoryList ? categoryList?.map((a) => ({
@@ -35,7 +35,7 @@ function AddAuthor({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
     const bookHandler = async (values: CreateBookSchemaType) => {
         try {
             await postMutation.mutateAsync({
-                url: queryKeys.getAllBooks,
+                url: "api/books",
                 method: "POST",
                 body: {
                     title: values.title,

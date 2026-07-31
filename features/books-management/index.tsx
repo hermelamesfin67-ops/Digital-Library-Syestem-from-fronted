@@ -11,11 +11,18 @@ import { DeleteIcon, PencilIcon } from "lucide-react";
 import ConfirmationModal from "../shared/confirmation-modal";
 import { useQueryClient } from "@tanstack/react-query";
 import ImagePreview from "../shared/image";
+import { useSession } from "next-auth/react";
+import { ROLE } from "@/constants";
 
 function BooksManagement() {
     const queryClient = useQueryClient()
+    const { data: session } = useSession()
+    const role = session?.user?.user?.role
+
     const [isEditOpen, setIsEditOpen] = useState(false)
+    const [editingBookId, setEditingBookId] = useState<number | null>(null)
     const [isOpen, setIsOpen] = useState(false)
+
     const booksData = useFetchData(
         [queryKeys.getAllBooks],
         "api/books/"
@@ -25,15 +32,15 @@ function BooksManagement() {
     return (
         <div className="flex flex-col gap-4">
             <PageHeader title="Book Management">
-
-                <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-                    <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
-                        Add Book
-                    </DialogTrigger>
-                    <DialogContent className={"min-w-lg w-full"}>
-                        <AddBook setIsOpen={setIsEditOpen} />
-                    </DialogContent>
-                </Dialog>
+                {role === ROLE.librarian &&
+                    <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+                        <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
+                            Add Book
+                        </DialogTrigger>
+                        <DialogContent className={"min-w-lg w-full"}>
+                            <AddBook setEditingBookId={setEditingBookId} setIsOpen={setIsEditOpen} />
+                        </DialogContent>
+                    </Dialog>}
             </PageHeader>
 
             Books Management
@@ -66,54 +73,68 @@ function BooksManagement() {
                                         </div>
                                     </Link>
 
-                                    <div className="grid grid-cols-2 text-sm">
+                                    {role === ROLE.librarian &&
+                                        <div className="grid grid-cols-2 text-sm">
 
-                                        <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-                                            <DialogTrigger>
-                                                <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-[#e2e2e6] cursor-pointer">
-                                                    <PencilIcon size={15} /> Edit
-                                                </div>
-                                            </DialogTrigger>
-                                            <DialogContent className={"min-w-lg w-full"}>
-                                                <AddBook
-                                                    key={b?.id}
-                                                    id={b?.id}
-                                                    title={b?.title}
-                                                    author={b?.author_name}
-                                                    category={b?.category_name}
-                                                    total_copies={b?.total_copies}
-                                                    available_copies={b?.available_copies}
-                                                    image={b?.image}
-                                                    setIsOpen={setIsEditOpen}
-                                                />
-                                            </DialogContent>
-                                        </Dialog>
+                                            <Dialog
+                                                open={isEditOpen && editingBookId === b.id}
+                                                onOpenChange={(open) => {
+                                                    if (open) {
+                                                        setEditingBookId(b?.id)
+                                                        setIsEditOpen(true)
+                                                    } else {
+                                                        setIsEditOpen(false)
+                                                        setEditingBookId(null)
+                                                    }
+                                                }}>
+                                                <DialogTrigger>
+                                                    <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-[#e2e2e6] cursor-pointer">
+                                                        <PencilIcon size={15} /> Edit
+                                                    </div>
+                                                </DialogTrigger>
+                                                <DialogContent className={"min-w-lg w-full"}>
+                                                    <AddBook
+                                                        key={b?.id}
+                                                        id={b?.id}
+                                                        title={b?.title}
+                                                        author={b?.author_name}
+                                                        category={b?.category_name}
+                                                        total_copies={b?.total_copies}
+                                                        available_copies={b?.available_copies}
+                                                        image={b?.image}
+                                                        setIsOpen={setIsEditOpen}
+                                                        setEditingBookId={setEditingBookId}
+                                                    />
+                                                </DialogContent>
+                                            </Dialog>
 
-                                        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                                            <DialogTrigger>
-                                                <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-[#e2e2e6] cursor-pointer">
-                                                    <DeleteIcon size={15} /> Delete
-                                                </div>
-                                            </DialogTrigger>
-                                            <DialogContent className={"min-w-lg w-full"}>
-                                                <ConfirmationModal
-                                                    title="Delete this book"
-                                                    url={`api/books/${b?.id}/`}
-                                                    method="DELETE"
-                                                    onSuccess={() => {
-                                                        queryClient.invalidateQueries({ queryKey: [queryKeys.getAllBooks] });
-                                                        setIsOpen(false)
-                                                    }}
-                                                    successMessage="Book successfully deleted."
-                                                    body={{}}
-                                                />
-                                            </DialogContent>
-                                        </Dialog>
+                                            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                                                <DialogTrigger>
+                                                    <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-[#e2e2e6] cursor-pointer">
+                                                        <DeleteIcon size={15} /> Delete
+                                                    </div>
+                                                </DialogTrigger>
+                                                <DialogContent className={"min-w-lg w-full"}>
+                                                    <ConfirmationModal
+                                                        title="Delete this book"
+                                                        description={`${b?.title}`}
+                                                        url={`api/books/${b?.id}/`}
+                                                        method="DELETE"
+                                                        onSuccess={() => {
+                                                            queryClient.invalidateQueries({ queryKey: [queryKeys.getAllBooks] });
+                                                            setIsOpen(false)
+                                                        }}
+                                                        successMessage="Book successfully deleted."
+                                                        body={{}}
+                                                    />
+                                                </DialogContent>
+                                            </Dialog>
 
-                                    </div>
+                                        </div>
+                                    }
                                 </div>
                             ))
-                            : "No Book Found!"
+                            : "Empty Book List!"
                 }
             </div>
         </div>

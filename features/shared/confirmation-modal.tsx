@@ -50,10 +50,10 @@ const ConfirmationModal = ({
     return (
         <div className="flex flex-col items-center justify-center space-y-5">
             <div>
-                <h2>
+                <h2 className="font-semibold text-lg">
                     {title}
                 </h2>
-                <p>{description}</p>
+                <p className="font-normal text-center">{description}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-3 mt-5 w-full">

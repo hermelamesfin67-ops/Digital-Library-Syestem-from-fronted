@@ -6,52 +6,124 @@ import PageHeader from "@/components/shared/page-header";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AddCategory from "./add";
 import { useState } from "react";
-import ImagePreview from "../shared/image";
+import { ROLE } from "@/constants";
+import { useSession } from "next-auth/react";
+import ConfirmationModal from "../shared/confirmation-modal";
+import { useQueryClient } from "@tanstack/react-query";
+import { DeleteIcon, PencilIcon } from "lucide-react";
 
 function AllCategories() {
+    const queryClient = useQueryClient()
+    const { data: session } = useSession()
+    const role = session?.user?.user?.role
+
+    const [isEditOpen, setIsEditOpen] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
+    const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null)
+
     const categoriesData = useFetchData(
         [queryKeys.getAllCategories],
-        queryKeys.getAllCategories
+        "api/categories/"
     )
-    const books: Book[] = categoriesData.data
+    const categories: Categories[] = categoriesData.data
 
     return (
         <div className="flex flex-col gap-4">
-            <PageHeader title="Book Management">
-
-                <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                    <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
-                        Add Category
-                    </DialogTrigger>
-                    <DialogContent className={"min-w-lg w-full"}>
-                        <AddCategory setIsOpen={setIsOpen} />
-                    </DialogContent>
-                </Dialog>
+            <PageHeader title="Category Management">
+                {role === ROLE.librarian &&
+                    <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+                        <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
+                            Add Category
+                        </DialogTrigger>
+                        <DialogContent className={"min-w-lg w-full"}>
+                            <AddCategory setEditingCategoryId={setEditingCategoryId} setIsOpen={setIsEditOpen} />
+                        </DialogContent>
+                    </Dialog>
+                }
             </PageHeader>
 
-            All Books
+            Category Lists
 
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 lg:gap-5">
                 {
                     categoriesData.isFetching ?
                         Array(20).fill(0).map((_, i) => (
                             <BookLoader key={i} />
                         ))
-                        : books?.length ?
-                            books?.map((b) => (
-                                <div key={b.id} className="flex flex-col gap-1.5">
-                                    <ImagePreview src={b?.image || "/book1.png"} alt="book"
-                                        width={100}
-                                        height={100}
-                                        className="w-full h-48 object-cover"
-                                    />
-                                    <p className="capitalize text-sm font-normal">
-                                        {b?.title}
-                                    </p>
+                        : categories?.length ?
+                            categories?.map((cat) => (
+                                <div key={cat?.id} className="flex flex-col gap-3 p-3 bg-white shadow hover:shadow-md rounded-lg">
+                                    <div className="flex flex-col items-center gap-3">
+                                        {/* <ImagePreview src={cat?.image || "/book1.png"} alt="book"
+                                            width={100}
+                                            height={100}
+                                            className="w-20 h-28 object-cover hover:scale-105"
+                                        /> */}
+                                        <hr />
+                                        <div>
+                                            <p className="capitalize text-cm font-bold">
+                                                {cat?.name}
+                                            </p>
+
+                                        </div>
+                                    </div>
+
+                                    {role === ROLE.librarian &&
+                                        <div className="grid grid-cols-2 text-sm">
+                                            <Dialog open={isEditOpen && editingCategoryId === cat?.id}
+                                                onOpenChange={(open) => {
+                                                    if (open) {
+                                                        setEditingCategoryId(cat?.id)
+                                                        setIsEditOpen(true)
+                                                    } else {
+                                                        setIsEditOpen(false)
+                                                        setEditingCategoryId(null)
+                                                    }
+                                                }}>
+                                                <DialogTrigger>
+                                                    <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-[#e2e2e6] cursor-pointer">
+                                                        <PencilIcon size={15} /> Edit
+                                                    </div>
+                                                </DialogTrigger>
+                                                <DialogContent className={"min-w-lg w-full"}>
+                                                    <AddCategory
+                                                        key={cat?.id}
+                                                        name={cat?.name}
+                                                        description={cat?.descriptions}
+                                                        // image={cat?.image}
+                                                        setIsOpen={setIsEditOpen}
+                                                        setEditingCategoryId={setEditingCategoryId}
+                                                    />
+                                                </DialogContent>
+                                            </Dialog>
+
+                                            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                                                <DialogTrigger>
+                                                    <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-[#e2e2e6] cursor-pointer">
+                                                        <DeleteIcon size={15} /> Delete
+                                                    </div>
+                                                </DialogTrigger>
+                                                <DialogContent className={"min-w-lg w-full"}>
+                                                    <ConfirmationModal
+                                                        title="Delete this Category"
+                                                        description={`${cat?.name}`}
+                                                        url={`api/categories/${cat?.id}/`}
+                                                        method="DELETE"
+                                                        onSuccess={() => {
+                                                            queryClient.invalidateQueries({ queryKey: [queryKeys.getAllCategories] });
+                                                            setIsOpen(false)
+                                                        }}
+                                                        successMessage="Category successfully deleted."
+                                                        body={{}}
+                                                    />
+                                                </DialogContent>
+                                            </Dialog>
+
+                                        </div>
+                                    }
                                 </div>
                             ))
-                            : "No Category Found!"
+                            : "Empty Category List!"
                 }
             </div>
         </div>

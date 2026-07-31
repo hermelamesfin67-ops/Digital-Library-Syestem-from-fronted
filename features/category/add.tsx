@@ -1,25 +1,34 @@
 "use client"
-import { queryKeys } from "@/api/query-keys"
 import useDynamicMutation from "@/api/use-post-data"
 import { Button } from "@/components/ui/button"
 import { DialogClose } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { createCategorySchema, CreateCategorySchemaType } from "@/validation/category.schema"
 import { Formik, Form, ErrorMessage } from "formik"
 
-function AddCategory({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
+type Props = {
+    id?: string
+    name?: string
+    description?: string
+    image?: string
+    setIsOpen: (arg: boolean) => void
+    setEditingCategoryId: (arg: number | null) => void
+}
+function AddCategory({ id, name, description, setIsOpen, setEditingCategoryId }: Props) {
     const postMutation = useDynamicMutation({ type: "FormData" })
 
     const bookHandler = async (values: CreateCategorySchemaType) => {
         try {
             await postMutation.mutateAsync({
-                url: queryKeys.getAllCategories,
-                method: "POST",
+                url: id ? `api/categories/${id}` : `api/categories/`,
+                method: id ? "PUT" : "POST",
                 body: {
                     name: values.name
                 },
                 onSuccess: () => {
                     setIsOpen(false)
+                    setEditingCategoryId(null)
                 },
             });
         } catch (err) {
@@ -30,7 +39,8 @@ function AddCategory({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
     return (
         <Formik
             initialValues={{
-                name: "",
+                name: name ?? "",
+                description: description ?? "",
                 image: "" as unknown as File
             }}
             validationSchema={createCategorySchema}
@@ -39,7 +49,7 @@ function AddCategory({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
             {({ values, setFieldValue }) => {
                 return (
                     <Form className="flex flex-col gap-3 p-5">
-                        <p>Add Category Form</p>
+                        <p className="text-lg font-semibold">{id ? "Update" : "Add"} Category Form</p>
                         <div>
                             <p className="mb-1">
                                 Category Name
@@ -51,7 +61,24 @@ function AddCategory({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
                                 placeholder="Category Name"
                             />
                             <ErrorMessage
-                                name={"title"}
+                                name={"name"}
+                                component="div"
+                                className={"text-xs text-red-500 pt-1 font-medium"}
+                            />
+                        </div>
+                        <div>
+                            <p className="mb-1">
+                                Category Description
+                            </p>
+                            <Textarea
+                                name="description"
+                                value={values.description}
+                                onChange={(e) => setFieldValue("description", e.target.value)}
+                                placeholder="Category Description"
+                                className="min-h-24"
+                            />
+                            <ErrorMessage
+                                name={"description"}
                                 component="div"
                                 className={"text-xs text-red-500 pt-1 font-medium"}
                             />
@@ -59,13 +86,13 @@ function AddCategory({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
 
                         <div>
                             <p className="mb-1">
-                                Cover Image
+                                Cover Icon
                             </p>
                             <Input
                                 name="image"
                                 type="file"
                                 onChange={(e) => setFieldValue("image", e.currentTarget.files?.[0] || null)}
-                                placeholder="Book Cover"
+                                placeholder="Category Icon"
                             />
                             <ErrorMessage
                                 name={"image"}

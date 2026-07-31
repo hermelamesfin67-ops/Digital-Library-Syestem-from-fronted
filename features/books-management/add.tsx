@@ -23,7 +23,7 @@ type PayloadType = {
     image?: File
 }
 type Props = {
-    id?: string,
+    id?: number,
     title?: string,
     author?: string,
     category?: string,
@@ -31,14 +31,15 @@ type Props = {
     available_copies?: string,
     image?: string
     setIsOpen: (arg: boolean) => void
+    setEditingBookId: (arg: number | null) => void
 }
-function AddBook({ id, title, author, category, available_copies, total_copies, image, setIsOpen }: Props) {
+function AddBook({ id, title, author, category, available_copies, total_copies, image, setIsOpen, setEditingBookId }: Props) {
     const queryClient = useQueryClient()
     const postMutation = useDynamicMutation({ type: "FormData" })
 
     const authorData = useFetchData(
         [queryKeys.getAllAuthors],
-        queryKeys.getAllAuthors
+        "api/authors/"
     )
     const authorsList: Authors[] = authorData.data
     const authors = authorsList ? authorsList?.map((a) => ({
@@ -47,7 +48,7 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
     })) : []
     const categoryData = useFetchData(
         [queryKeys.getAllCategories],
-        queryKeys.getAllCategories
+        "api/categories/"
     )
     const categoryList: Categories[] = categoryData.data
     const categories = categoryList ? categoryList?.map((a) => ({
@@ -80,13 +81,14 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
         }
         try {
             await postMutation.mutateAsync({
-                url: id ? `${queryKeys.getAllBooks}${id}/` : queryKeys.getAllBooks,
+                url: id ? `api/books/${id}/` : "api/books/",
                 method: id ? "PATCH" : "POST",
                 body: payload,
                 onSuccess: () => {
                     toast.success(id ? "Book Updated Successfully" : "Book Added Successfully")
                     queryClient.invalidateQueries({ queryKey: [queryKeys.getAllBooks] })
                     setIsOpen(false)
+                    setEditingBookId(null)
                 },
             });
         } catch (err) {
@@ -110,7 +112,7 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
             {({ values, setFieldValue }) => {
                 return (
                     <Form className="flex flex-col gap-3 p-5">
-                        <p className="text-lg font-semibold">Add Book Form</p>
+                        <p className="text-lg font-semibold">{id ? "Update" : "Add"} Book Form</p>
                         <div>
                             <p className="mb-1">
                                 Title

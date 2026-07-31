@@ -20,7 +20,7 @@ function AllAuthors() {
     const [isOpen, setIsOpen] = useState(false)
     const authorsData = useFetchData(
         [queryKeys.getAllAuthors],
-        queryKeys.getAllAuthors
+        "api/authors/"
     )
     const authors: Authors[] = authorsData.data
 

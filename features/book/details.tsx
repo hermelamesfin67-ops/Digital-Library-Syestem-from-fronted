@@ -3,16 +3,12 @@
 import { queryKeys } from "@/api/query-keys"
 import { useFetchData } from "@/api/use-fetch-data"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import AddBook from "../books-management/add"
-import { useState } from "react"
-import { Loader2, PencilIcon } from "lucide-react"
+import { Loader2 } from "lucide-react"
 
 function BookDetails({ id }: { id: string }) {
-    const [isOpen, setIsOpen] = useState(false)
     const booksData = useFetchData(
         [queryKeys.getAllBooks, id],
-        `${queryKeys.getAllBooks}${id}`
+        `api/books/${id}`
     )
     const book: Book = booksData.data
     if (booksData.isFetching) return <Loader2 className="animate-spin" />
