@@ -1,52 +1,62 @@
 "use client"
 import { queryKeys } from "@/api/query-keys"
-import { useFetchData } from "@/api/use-fetch-data"
 import useDynamicMutation from "@/api/use-post-data"
 import { Button } from "@/components/ui/button"
 import { DialogClose } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { createBookSchema, CreateBookSchemaType } from "@/validation/book.schema"
+import { hasObjectsDifferentValues } from "@/utils"
+import { createAuthorSchema, CreateAuthorSchemaType, updateAuthorSchema } from "@/validation/author.schame"
+import { useQueryClient } from "@tanstack/react-query"
 import { Formik, Form, ErrorMessage } from "formik"
-import { Loader2 } from "lucide-react"
+import { toast } from "sonner"
+import ImagePreview from "../shared/image"
 
-function AddAuthor({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
+type Payload = {
+    id?: string | number
+    name?: string
+    biography?: string
+    book_count?: number
+    image?: File
+}
+type Props = {
+    id?: string | number
+    name?: string
+    biography?: string
+    book_count?: number
+    image?: string
+    setIsOpen: (arg: boolean) => void
+    setEditingAuthorId: (arg: number | null) => void
+}
+
+function AddAuthor({ id, name, biography, book_count, image, setIsOpen, setEditingAuthorId }: Props) {
+    const queryClient = useQueryClient()
     const postMutation = useDynamicMutation({ type: "FormData" })
 
-    const authorData = useFetchData(
-        [queryKeys.getAllAuthors],
-        "api/authors/"
-    )
-    const authorsList: Authors[] = authorData.data
-    const authors = authorsList ? authorsList?.map((a) => ({
-        label: a?.name,
-        value: a?.id
-    })) : []
-    const categoryData = useFetchData(
-        [queryKeys.getAllCategories],
-        "api/categories"
-    )
-    const categoryList: Categories[] = categoryData.data
-    const categories = categoryList ? categoryList?.map((a) => ({
-        label: a?.name,
-        value: a?.id
-    })) : []
 
-    const bookHandler = async (values: CreateBookSchemaType) => {
+    const initialValues = {
+        name: name ?? "",
+        biography: biography ?? "",
+        book_count: book_count ?? "" as unknown as number,
+        image: "" as unknown as File
+    }
+
+    const bookHandler = async (values: CreateAuthorSchemaType) => {
+        const payload: Payload = {
+            name: values.name,
+            biography: values.biography,
+            book_count: values.book_count || 0
+        }
+        if (values.image) payload["image"] = values.image as unknown as File
         try {
             await postMutation.mutateAsync({
-                url: "api/books",
-                method: "POST",
-                body: {
-                    title: values.title,
-                    author_name: values.author,
-                    category_name: values.category,
-                    total_copies: values.total_copies,
-                    available_copies: values.available_copies,
-                    image: values.image
-                },
+                url: id ? `api/books/${id}/` : "api/authors/",
+                method: id ? "PUT" : "POST",
+                body: payload,
                 onSuccess: () => {
+                    toast.success(id ? "Author Updated Successfully" : "Author Added Successfully")
+                    queryClient.invalidateQueries({ queryKey: [queryKeys.getAllAuthors] })
                     setIsOpen(false)
+                    setEditingAuthorId(null)
                 },
             });
         } catch (err) {
@@ -54,127 +64,68 @@ function AddAuthor({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
         }
     };
 
-    if (authorData.isFetching || categoryData.isFetching) return <Loader2 className="animate-spin" />
     return (
         <Formik
-            initialValues={{
-                title: "",
-                author: "",
-                category: "",
-                total_copies: "",
-                available_copies: "",
-                image: "" as unknown as File
+            initialValues={initialValues}
+            validationSchema={id ? updateAuthorSchema : createAuthorSchema}
+            onSubmit={(val) => {
+                if (!val.image && !hasObjectsDifferentValues(val, initialValues)) {
+                    toast.warning("No changes applied!");
+                    return;
+                }
+                bookHandler(val)
             }}
-            validationSchema={createBookSchema}
-            onSubmit={(val) => bookHandler(val)}
         >
             {({ values, setFieldValue }) => {
                 return (
                     <Form className="flex flex-col gap-3 p-5">
-                        <p>Add Book Form</p>
+                        <p className="text-lg font-semibold">{id ? "Update" : "Add"} Author Form</p>
                         <div>
                             <p className="mb-1">
-                                Title
+                                Author Name
                             </p>
                             <Input
-                                name="title"
-                                value={values.title}
-                                onChange={(e) => setFieldValue("title", e.target.value)}
-                                placeholder="Book Title"
+                                name="name"
+                                value={values.name}
+                                onChange={(e) => setFieldValue("name", e.target.value)}
+                                placeholder="Author Name"
                             />
                             <ErrorMessage
-                                name={"title"}
+                                name={"name"}
                                 component="div"
                                 className={"text-xs text-red-500 pt-1 font-medium"}
                             />
                         </div>
                         <div>
                             <p className="mb-1">
-                                Author
+                                Author Biography
                             </p>
-                            <Select items={authors}>
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select Author" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        {authors?.map((item) => (
-                                            <SelectItem key={item.value} onClick={() => setFieldValue("author", item.value)} value={item.value}>
-                                                {item.label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
+                            <Input
+                                name="biography"
+                                value={values.biography}
+                                onChange={(e) => setFieldValue("biography", e.target.value)}
+                                placeholder="Author Biography"
+                            />
                             <ErrorMessage
-                                name={"author"}
+                                name={"biography"}
                                 component="div"
                                 className={"text-xs text-red-500 pt-1 font-medium"}
                             />
                         </div>
                         <div>
                             <p className="mb-1">
-                                Category
+                                Book Count
                             </p>
-                            <Select items={categories}>
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select Category" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        {categories?.map((item) => (
-                                            <SelectItem key={item.value} onClick={() => setFieldValue("category", item.value)} value={item.value}>
-                                                {item.label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                            <ErrorMessage
-                                name={"category"}
-                                component="div"
-                                className={"text-xs text-red-500 pt-1 font-medium"}
+                            <Input
+                                name="book_count"
+                                value={values.book_count}
+                                onChange={(e) => setFieldValue("book_count", e.target.value)}
+                                placeholder="Books Count"
                             />
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                            <div>
-                                <p className="mb-1">
-                                    Total Copies
-                                </p>
-                                <Input
-                                    name="total_copies"
-                                    type="number"
-                                    value={values.total_copies}
-                                    onChange={(e) => setFieldValue("total_copies", e.target.value)}
-                                    placeholder="Total Copies"
-                                />
-                                <ErrorMessage
-                                    name={"total_copies"}
-                                    component="div"
-                                    className={"text-xs text-red-500 pt-1 font-medium"}
-                                />
-                            </div>
-                            <div>
-                                <p className="mb-1">
-                                    Available Copies
-                                </p>
-                                <Input
-                                    name="available_copies"
-                                    type="number"
-                                    onChange={(e) => setFieldValue("available_copies", e.target.value)}
-                                    value={values.available_copies}
-                                    placeholder="Available Copies"
-                                />
-                                <ErrorMessage
-                                    name={"available_copies"}
-                                    component="div"
-                                    className={"text-xs text-red-500 pt-1 font-medium"}
-                                />
-                            </div>
                         </div>
                         <div>
                             <p className="mb-1">
-                                Book Cover
+                                Author Avatar
                             </p>
                             <Input
                                 name="image"
@@ -182,6 +133,13 @@ function AddAuthor({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
                                 onChange={(e) => setFieldValue("image", e.currentTarget.files?.[0] || null)}
                                 placeholder="Book Cover"
                             />
+                            {!values.image && image ?
+                                <ImagePreview
+                                    width={100}
+                                    height={100}
+                                    src={image} alt="book cover" className="w-12 h-12"
+                                />
+                                : null}
                             <ErrorMessage
                                 name={"image"}
                                 component="div"
@@ -189,16 +147,18 @@ function AddAuthor({ setIsOpen }: { setIsOpen: (arg: boolean) => void }) {
                             />
                         </div>
 
+
+
                         <div className="grid grid-cols-2 gap-3 mt-5">
                             <DialogClose className={"border rounded-md"}>
-                                <div className="w-full h-full">
+                                <Button variant={"secondary"} className="w-full h-full cursor-pointer">
                                     Cancel
-                                </div>
+                                </Button>
                             </DialogClose>
                             <Button
                                 type="submit"
-                                disabled={postMutation.isPending}
                                 variant={"primary"}
+                                disabled={postMutation.isPending}
                             >
                                 {postMutation.isPending ? "Submitting..." : "Submit"}
                             </Button>

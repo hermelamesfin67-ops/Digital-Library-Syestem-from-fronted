@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 import ConfirmationModal from "../shared/confirmation-modal";
 import { useQueryClient } from "@tanstack/react-query";
 import { DeleteIcon, PencilIcon } from "lucide-react";
+import ImagePreview from "../shared/image";
 
 function AllCategories() {
     const queryClient = useQueryClient()
@@ -54,11 +55,11 @@ function AllCategories() {
                             categories?.map((cat) => (
                                 <div key={cat?.id} className="flex flex-col gap-3 p-3 bg-white shadow hover:shadow-md rounded-lg">
                                     <div className="flex flex-col items-center gap-3">
-                                        {/* <ImagePreview src={cat?.image || "/book1.png"} alt="book"
+                                        <ImagePreview src={"/book-category.jpeg"} alt="book"
                                             width={100}
                                             height={100}
-                                            className="w-20 h-28 object-cover hover:scale-105"
-                                        /> */}
+                                            className="w-20 h-20 object-cover hover:scale-105"
+                                        />
                                         <hr />
                                         <div>
                                             <p className="capitalize text-cm font-bold">

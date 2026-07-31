@@ -40,7 +40,8 @@ function BooksManagement() {
                         <DialogContent className={"min-w-lg w-full"}>
                             <AddBook setEditingBookId={setEditingBookId} setIsOpen={setIsEditOpen} />
                         </DialogContent>
-                    </Dialog>}
+                    </Dialog>
+                }
             </PageHeader>
 
             Books Management

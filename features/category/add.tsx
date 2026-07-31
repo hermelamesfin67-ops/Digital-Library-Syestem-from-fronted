@@ -1,11 +1,15 @@
 "use client"
+import { queryKeys } from "@/api/query-keys"
 import useDynamicMutation from "@/api/use-post-data"
 import { Button } from "@/components/ui/button"
 import { DialogClose } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { hasObjectsDifferentValues } from "@/utils"
 import { createCategorySchema, CreateCategorySchemaType } from "@/validation/category.schema"
+import { useQueryClient } from "@tanstack/react-query"
 import { Formik, Form, ErrorMessage } from "formik"
+import { toast } from "sonner"
 
 type Props = {
     id?: string
@@ -16,9 +20,16 @@ type Props = {
     setEditingCategoryId: (arg: number | null) => void
 }
 function AddCategory({ id, name, description, setIsOpen, setEditingCategoryId }: Props) {
+    const queryClient = useQueryClient()
     const postMutation = useDynamicMutation({ type: "FormData" })
 
-    const bookHandler = async (values: CreateCategorySchemaType) => {
+    const initialValues = {
+        name: name ?? "",
+        description: description ?? "",
+        image: "" as unknown as File
+    }
+
+    const authorHandler = async (values: CreateCategorySchemaType) => {
         try {
             await postMutation.mutateAsync({
                 url: id ? `api/categories/${id}` : `api/categories/`,
@@ -27,6 +38,8 @@ function AddCategory({ id, name, description, setIsOpen, setEditingCategoryId }:
                     name: values.name
                 },
                 onSuccess: () => {
+                    toast.success(id ? "Category Updated Successfully" : "Category Added Successfully")
+                    queryClient.invalidateQueries({ queryKey: [queryKeys.getAllCategories] })
                     setIsOpen(false)
                     setEditingCategoryId(null)
                 },
@@ -38,13 +51,15 @@ function AddCategory({ id, name, description, setIsOpen, setEditingCategoryId }:
 
     return (
         <Formik
-            initialValues={{
-                name: name ?? "",
-                description: description ?? "",
-                image: "" as unknown as File
-            }}
+            initialValues={initialValues}
             validationSchema={createCategorySchema}
-            onSubmit={(val) => bookHandler(val)}
+            onSubmit={(val) => {
+                if (!hasObjectsDifferentValues(val, initialValues)) {
+                    toast.warning("No changes applied!");
+                    return;
+                }
+                authorHandler(val)
+            }}
         >
             {({ values, setFieldValue }) => {
                 return (

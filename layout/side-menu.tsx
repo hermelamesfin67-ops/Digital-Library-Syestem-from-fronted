@@ -13,12 +13,12 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const menus = [
-    { name: "Dashboard", url: "/", permission: ["Super Admin", "librarian", "Student"] },
-    { name: "Books Management", url: "/books-management", permission: ["Super Admin", "librarian"] },
-    { name: "All Books", url: "/books", permission: ["Student"] },
-    { name: "Categories", url: "/categories", permission: ["Super Admin", "librarian"] },
-    { name: "Authors", url: "/authors", permission: ["Super Admin", "librarian"] },
-    { name: "Borrows", url: "", permission: ["Super Admin", "librarian", "Student"] },
+    { name: "Dashboard", url: "/", permission: ["super admin", "librarian", "student"] },
+    { name: "Books Management", url: "/books-management", permission: ["super admin", "librarian"] },
+    { name: "All Books", url: "/books", permission: ["student"] },
+    { name: "Categories", url: "/categories", permission: ["super admin", "librarian"] },
+    { name: "Authors", url: "/authors", permission: ["super admin", "librarian"] },
+    { name: "Borrows", url: "", permission: ["super admin", "librarian", "student"] },
 ]
 export function AppSidebar() {
     const { data: session } = useSession()
