@@ -14,7 +14,7 @@ import { usePathname } from "next/navigation"
 
 function MobileSideMenu() {
     const { data: session } = useSession()
-    const role = session?.user?.user?.role || ""
+    const role = session?.user?.user?.role || session?.user.user.account_type || ""
 
     const filteredMenus = () => {
         return menus.filter((menu) => menu.permission.includes(role))

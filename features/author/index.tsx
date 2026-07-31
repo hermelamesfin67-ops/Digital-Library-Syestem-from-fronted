@@ -21,7 +21,7 @@ import { ROLE } from "@/constants";
 
 function AllAuthors() {
     const { data: session } = useSession()
-    const role = session?.user?.user?.role
+    const role = session?.user?.user?.role || session?.user.user.account_type
 
     const [isOpen, setIsOpen] = useState(false)
     const [editingAuthorId, setEditingAuthorId] = useState<number | null>(null)

@@ -26,7 +26,7 @@ function Header() {
                                 {session?.user?.user?.username}
                             </p>
                             <p className="text-xs font-light capitalize">
-                                {session?.user?.user?.role}
+                                {session?.user?.user?.role || session?.user.user.account_type}
                             </p>
                         </div>
                     </DropdownMenuTrigger>

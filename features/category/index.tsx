@@ -16,7 +16,7 @@ import ImagePreview from "../shared/image";
 function AllCategories() {
     const queryClient = useQueryClient()
     const { data: session } = useSession()
-    const role = session?.user?.user?.role
+    const role = session?.user?.user?.role || session?.user.user.account_type
 
     const [isEditOpen, setIsEditOpen] = useState(false)
     const [isOpen, setIsOpen] = useState(false)

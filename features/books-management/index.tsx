@@ -17,7 +17,7 @@ import { ROLE } from "@/constants";
 function BooksManagement() {
     const queryClient = useQueryClient()
     const { data: session } = useSession()
-    const role = session?.user?.user?.role
+    const role = session?.user?.user?.role || session?.user.user.account_type
 
     const [isEditOpen, setIsEditOpen] = useState(false)
     const [editingBookId, setEditingBookId] = useState<number | null>(null)

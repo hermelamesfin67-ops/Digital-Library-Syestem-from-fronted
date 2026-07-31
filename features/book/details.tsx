@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react"
 
 function BookDetails({ id }: { id: string }) {
     const { data: session } = useSession()
-    const role = session?.user?.user?.role
+    const role = session?.user?.user?.role || session?.user.user.account_type
 
     const booksData = useFetchData(
         [queryKeys.getAllBooks, id],
