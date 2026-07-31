@@ -1,5 +1,5 @@
 export const ROLE = {
-  "super admin": "super admin",
-  librarian: "librarian",
-  student: "student",
+  Superuser: "Superuser",
+  Librarian: "Librarian",
+  Member: "Member",
 };

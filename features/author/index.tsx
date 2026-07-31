@@ -35,7 +35,7 @@ function AllAuthors() {
     return (
         <div className="flex flex-col gap-4">
             <PageHeader title="Author Management">
-                {role === ROLE.librarian &&
+                {role === ROLE.Librarian &&
                     <Dialog open={isOpen} onOpenChange={setIsOpen}>
                         <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
                             Add Author
@@ -73,7 +73,7 @@ function AllAuthors() {
                                     <TableCell>{author?.biography}</TableCell>
                                     <TableCell>{author?.book_count}</TableCell>
                                     <TableCell>
-                                        {role === ROLE.librarian &&
+                                        {role === ROLE.Librarian &&
                                             <Dialog
                                                 open={isOpen && editingAuthorId === author.id}
                                                 onOpenChange={(open) => {

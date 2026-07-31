@@ -32,7 +32,7 @@ function BooksManagement() {
     return (
         <div className="flex flex-col gap-4">
             <PageHeader title="Book Management">
-                {role === ROLE.librarian &&
+                {role === ROLE.Librarian &&
                     <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
                         <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
                             Add Book
@@ -74,7 +74,7 @@ function BooksManagement() {
                                         </div>
                                     </Link>
 
-                                    {role === ROLE.librarian &&
+                                    {role === ROLE.Librarian &&
                                         <div className="grid md:grid-cols-2 text-sm">
 
                                             <Dialog

@@ -51,7 +51,7 @@ function BookDetails({ id }: { id: string }) {
                         </div>
                     </div>
                     <div>
-                        {role === ROLE.student &&
+                        {role === ROLE.Member &&
                             <Button variant={"secondary"}>Borrow</Button>
                         }
                     </div>

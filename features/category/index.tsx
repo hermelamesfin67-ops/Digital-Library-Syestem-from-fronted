@@ -31,7 +31,7 @@ function AllCategories() {
     return (
         <div className="flex flex-col gap-4">
             <PageHeader title="Category Management">
-                {role === ROLE.librarian &&
+                {role === ROLE.Librarian &&
                     <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
                         <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
                             Add Category
@@ -69,7 +69,7 @@ function AllCategories() {
                                         </div>
                                     </div>
 
-                                    {role === ROLE.librarian &&
+                                    {role === ROLE.Librarian &&
                                         <div className="grid md:grid-cols-2 text-sm">
                                             <Dialog open={isEditOpen && editingCategoryId === cat?.id}
                                                 onOpenChange={(open) => {
