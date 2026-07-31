@@ -21,5 +21,7 @@ type Authors = {
 type Categories = {
   id: number;
   name: string;
-  descriptions: string;
+  icon: string;
+  description: string;
+  Book_count: number;
 };

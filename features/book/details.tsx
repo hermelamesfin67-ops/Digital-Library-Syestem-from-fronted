@@ -34,7 +34,7 @@ function BookDetails({ id }: { id: string }) {
                     <div className="flex justify-between items-center gap-1.5">
                         <div className="leading-3">
                             <span className="text-xs text-[#626262]">Book</span>
-                            <h2 className="font-bold text-xl">{book?.title}</h2>
+                            <h2 className="font-bold text-2xl capitalize">{book?.title}</h2>
                         </div>
                     </div>
                     <div className="grid md:grid-cols-2 justify-between gap-5">

@@ -65,6 +65,11 @@ function AllCategories() {
                                             <p className="capitalize text-cm font-bold">
                                                 {cat?.name}
                                             </p>
+                                            {cat?.Book_count &&
+                                                <p className="capitalize text-cm font-bold">
+                                                    {cat?.Book_count} Books
+                                                </p>
+                                            }
 
                                         </div>
                                     </div>
@@ -90,8 +95,8 @@ function AllCategories() {
                                                     <AddCategory
                                                         key={cat?.id}
                                                         name={cat?.name}
-                                                        description={cat?.descriptions}
-                                                        // image={cat?.image}
+                                                        description={cat?.description}
+                                                        image={cat?.icon}
                                                         setIsOpen={setIsEditOpen}
                                                         setEditingCategoryId={setEditingCategoryId}
                                                     />
