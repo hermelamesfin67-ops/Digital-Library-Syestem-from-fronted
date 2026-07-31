@@ -49,7 +49,7 @@ function AddAuthor({ id, name, biography, book_count, image, setIsOpen, setEditi
         if (values.image) payload["image"] = values.image as unknown as File
         try {
             await postMutation.mutateAsync({
-                url: id ? `api/books/${id}/` : "api/authors/",
+                url: id ? `api/authors/${id}/` : "api/authors/",
                 method: id ? "PUT" : "POST",
                 body: payload,
                 onSuccess: () => {

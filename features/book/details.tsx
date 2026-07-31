@@ -3,9 +3,14 @@
 import { queryKeys } from "@/api/query-keys"
 import { useFetchData } from "@/api/use-fetch-data"
 import { Button } from "@/components/ui/button"
+import { ROLE } from "@/constants"
 import { Loader2 } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 function BookDetails({ id }: { id: string }) {
+    const { data: session } = useSession()
+    const role = session?.user?.user?.role
+
     const booksData = useFetchData(
         [queryKeys.getAllBooks, id],
         `api/books/${id}`
@@ -46,8 +51,9 @@ function BookDetails({ id }: { id: string }) {
                         </div>
                     </div>
                     <div>
-
-                        <Button variant={"secondary"}>Borrow</Button>
+                        {role === ROLE.student &&
+                            <Button variant={"secondary"}>Borrow</Button>
+                        }
                     </div>
                 </div>
             </div>
