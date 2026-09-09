@@ -21,7 +21,7 @@ function HomePage() {
         <div className="flex flex-col gap-4 w-full mx-auto max-w-5xl p-5">
             <h3 className="text-center text-2xl font-semibold py-5">Library Management System</h3>
 
-            {/* <HeroSlider /> */}
+            <HeroSlider />
 
             <div className="flex flex-col gap-3 py-5">
                 <PageHeader title="Available Books in the Library" />
