@@ -10,9 +10,10 @@ import { useState } from "react";
 import { DeleteIcon, PencilIcon } from "lucide-react";
 import ConfirmationModal from "../shared/confirmation-modal";
 import { useQueryClient } from "@tanstack/react-query";
-import ImagePreview from "../shared/image";
 import { useSession } from "next-auth/react";
 import { ROLE } from "@/constants";
+import image from "../../public/book.jpeg"
+import Image from "next/image"
 
 function BooksManagement() {
     const queryClient = useQueryClient()
@@ -56,7 +57,7 @@ function BooksManagement() {
                             books?.map((b) => (
                                 <div key={b?.id} className="flex flex-col gap-3 p-3 bg-white shadow hover:shadow-md rounded-lg">
                                     <Link href={`/books/${b.id}`} className="flex items-center gap-5">
-                                        <ImagePreview src={b?.image || "/book.jpeg"} alt="book"
+                                        <Image src={b?.image || image} alt="book"
                                             width={100}
                                             height={100}
                                             className="w-20 h-28 object-cover hover:scale-105"

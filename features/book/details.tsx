@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button"
 import { ROLE } from "@/constants"
 import { Loader2 } from "lucide-react"
 import { useSession } from "next-auth/react"
-import ImagePreview from "../shared/image"
+import image from "../../public/book.jpeg"
+import Image from "next/image"
 
 function BookDetails({ id, isPublic }: { id: string, isPublic?: boolean }) {
     const { data: session } = useSession()
@@ -25,8 +26,8 @@ function BookDetails({ id, isPublic }: { id: string, isPublic?: boolean }) {
     return (
         <div className={isPublic ? "flex flex-col gap-4 w-full mx-auto max-w-5xl p-5" : "mx-auto max-w-4xl w-full"}>
             <div className="flex gap-5">
-                <ImagePreview
-                    src={book?.image || "/book.jpeg"}
+                <Image
+                    src={book?.image || image}
                     alt={book?.title}
                     width={100}
                     height={100}

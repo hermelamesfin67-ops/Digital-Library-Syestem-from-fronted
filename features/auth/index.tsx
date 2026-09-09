@@ -24,7 +24,7 @@ function SingIn() {
         onSuccess: (res) => {
           signIn("credentials", {
             data: JSON.stringify(res),
-            callbackUrl: "/",
+            callbackUrl: "/dashboard",
           });
           toast.loading("Login Successful, Redirecting...");
         },
