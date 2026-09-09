@@ -25,3 +25,16 @@ type Categories = {
   description: string;
   Book_count: number;
 };
+
+type Borrows = {
+  user_Display: string;
+  created_at: Date;
+  due_date: Date;
+  status: string;
+  items: {
+    book: number;
+    borrow: number;
+    quantity: number;
+    book_title: string;
+  }[];
+};

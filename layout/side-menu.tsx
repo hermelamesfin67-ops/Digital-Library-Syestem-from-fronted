@@ -18,7 +18,7 @@ export const menus = [
     { name: "All Books", url: "/books", permission: ["Student"] },
     { name: "Categories", url: "/categories", permission: ["Superuser", "Librarian"] },
     { name: "Authors", url: "/authors", permission: ["Superuser", "Librarian"] },
-    { name: "Borrows", url: "", permission: ["Superuser", "Librarian", "Student"] },
+    { name: "Borrows", url: "/borrows", permission: ["Superuser", "Librarian", "Student"] },
 ]
 export function AppSidebar() {
     const { data: session } = useSession()

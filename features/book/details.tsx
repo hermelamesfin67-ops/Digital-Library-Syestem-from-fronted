@@ -7,6 +7,8 @@ import { Loader2 } from "lucide-react"
 import { useSession } from "next-auth/react"
 import image from "../../public/book.jpeg"
 import Image from "next/image"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import BorrowBook from "./borrow-book"
 
 function BookDetails({ id, isPublic }: { id: string, isPublic?: boolean }) {
     const { data: session } = useSession()
@@ -54,8 +56,19 @@ function BookDetails({ id, isPublic }: { id: string, isPublic?: boolean }) {
                         </div>
                     </div>
                     <div>
-                        {(role === ROLE.Member || role === undefined) &&
-                            <Button variant={"secondary"}>Borrow</Button>}
+                        {(role === ROLE.Student || role === undefined) &&
+                            <Dialog>
+                                <DialogTrigger>
+                                    <Button variant={"secondary"}>
+                                        Borrow
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent className={"md:min-w-lg w-full"}>
+                                    <BorrowBook book={book} />
+                                </DialogContent>
+                            </Dialog>
+
+                        }
                     </div>
                 </div>
             </div>

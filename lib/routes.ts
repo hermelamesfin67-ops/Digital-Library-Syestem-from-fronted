@@ -5,4 +5,5 @@ export const routes = {
 
   index: "/",
   home: "/home",
+  borrows: "/borrows",
 };
