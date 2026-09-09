@@ -30,7 +30,7 @@ function AllBooks() {
                                 <Link
                                     href={`/books/${b.id}`}
                                     key={b.id} className="flex flex-col gap-1.5 p-5 bg-white shadow hover:shadow-md rounded-md">
-                                    <ImagePreview src={b?.image || "/book1.png"} alt="book"
+                                    <ImagePreview src={b?.image || "/book.jpeg"} alt="book"
                                         width={100}
                                         height={100}
                                         className="w-full h-48 object-cover hover:scale-105"

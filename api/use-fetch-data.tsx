@@ -32,8 +32,9 @@ export const useFetchData = (
   url: string,
   headers?: Header["headers"] | any,
   enabled?: boolean,
+  isPublic?: boolean,
 ) => {
-  const header = useGetHeaders({});
+  const header = useGetHeaders({ isPublic });
   return useQuery({
     queryKey: queryKey,
     queryFn: async () => {

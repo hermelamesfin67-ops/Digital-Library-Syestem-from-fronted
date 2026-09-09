@@ -5,7 +5,7 @@ import { AppSidebar } from "@/layout/side-menu";
 import Header from "@/layout/header";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
-import MobileSideMenu from "@/layout/mobile-side-menu";
+// import MobileSideMenu from "@/layout/mobile-side-menu";
 
 export default function Layout({
   children,

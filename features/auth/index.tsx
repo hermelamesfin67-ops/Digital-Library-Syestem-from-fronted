@@ -1,9 +1,10 @@
 "use client"
 import useDynamicMutation from "@/api/use-post-data"
+import FormikInput from "@/components/forms/input"
+import FormikMaskedInput from "@/components/forms/masked-input"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { signInSchema, SignInSchemaType } from "@/validation/auth.schame"
-import { ErrorMessage, Form, Formik } from "formik"
+import { signInSchema, SignInSchemaType } from "@/validation/auth.schema"
+import { Form, Formik } from "formik"
 import { BookImageIcon } from "lucide-react"
 import { signIn } from "next-auth/react"
 import { toast } from "sonner"
@@ -50,42 +51,23 @@ function SingIn() {
           validationSchema={signInSchema}
           onSubmit={(val) => handleLogin(val)}
         >
-          {({ values, setFieldValue }) => {
+          {({ }) => {
             return (
               <Form className="flex flex-col gap-5">
-                <div>
-                  <p className="mb-1">
-                    Username
-                  </p>
-                  <Input
-                    name="username"
-                    value={values.username}
-                    onChange={(e) => setFieldValue("username", e.target.value)}
-                    placeholder="Enter Username"
-                  />
-                  <ErrorMessage
-                    name={"username"}
-                    component="div"
-                    className={"text-xs text-red-500 pt-1 font-medium"}
-                  />
-                </div>
-                <div>
-                  <p className="mb-1">
-                    Password
-                  </p>
-                  <Input
-                    name="password"
-                    type="password"
-                    value={values.password}
-                    onChange={(e) => setFieldValue("password", e.target.value)}
-                    placeholder="Enter Password"
-                  />
-                  <ErrorMessage
-                    name={"password"}
-                    component="div"
-                    className={"text-xs text-red-500 pt-1 font-medium"}
-                  />
-                </div>
+                <FormikInput
+                  id="username"
+                  name="username"
+                  label="Username"
+                  pattern="username"
+                  placeholder="Enter username"
+                />
+                <FormikMaskedInput
+                  id="password"
+                  name="password"
+                  label="Password"
+                  placeholder="Enter password"
+                  viewToggle
+                />
                 <div className="grid gap-3 mt-5">
                   <Button
                     size={"lg"}

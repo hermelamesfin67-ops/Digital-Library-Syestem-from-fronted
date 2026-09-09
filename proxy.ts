@@ -1,6 +1,5 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import { routes } from "./lib/routes";
 
 const blockedPaths = [
@@ -14,34 +13,37 @@ const blockedPaths = [
   "/_mmserverscripts",
 ];
 
-// Define the excluded paths
-const excludedPaths = [routes.signIn, routes.signOut, routes.error];
-
-// Custom middleware to exclude paths from auth
+const publicPaths = [
+  routes.signIn,
+  routes.signOut,
+  routes.error,
+  routes.home,
+  routes.index,
+];
 
 export default withAuth(
-  async function middleware(request) {
+  function middleware(request) {
     const { pathname } = request.nextUrl;
 
-    // Skip middleware for excluded paths
-    if (excludedPaths.includes(pathname)) {
+    // Allow public routes without authentication
+    if (
+      publicPaths.includes(pathname) ||
+      pathname === "/" ||
+      pathname === "/home" ||
+      pathname.startsWith("/home/")
+    ) {
       return NextResponse.next();
     }
 
-    const session = await getServerSession();
-
-    if (!session) {
-      return NextResponse.redirect("/auth/signin");
-    }
-
-    if (blockedPaths.some((path) => pathname.startsWith(path))) {
-      return new NextResponse("Not Found", { status: 404 });
-    }
-    if (pathname.startsWith("/_") || pathname.includes("cgi")) {
+    // Block suspicious/scanner paths
+    if (
+      blockedPaths.some((path) => pathname.startsWith(path)) ||
+      pathname.startsWith("/_") ||
+      pathname.includes("cgi")
+    ) {
       return new NextResponse("Not Found", { status: 404 });
     }
 
-    // Proceed with auth logic
     return NextResponse.next();
   },
   {
@@ -52,7 +54,20 @@ export default withAuth(
     },
 
     callbacks: {
-      authorized: ({ token }) => !!token,
+      authorized: ({ token, req }) => {
+        const pathname = req.nextUrl.pathname;
+
+        // Public: /home and everything underneath it
+        if (
+          pathname === "/" ||
+          pathname === "/home" ||
+          pathname.startsWith("/home/")
+        ) {
+          return true;
+        }
+
+        return !!token;
+      },
     },
   },
 );

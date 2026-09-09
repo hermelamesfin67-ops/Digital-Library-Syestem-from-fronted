@@ -1,35 +1,37 @@
 "use client"
-
 import { queryKeys } from "@/api/query-keys"
 import { useFetchData } from "@/api/use-fetch-data"
 import { Button } from "@/components/ui/button"
 import { ROLE } from "@/constants"
 import { Loader2 } from "lucide-react"
 import { useSession } from "next-auth/react"
+import ImagePreview from "../shared/image"
 
-function BookDetails({ id }: { id: string }) {
+function BookDetails({ id, isPublic }: { id: string, isPublic?: boolean }) {
     const { data: session } = useSession()
     const role = session?.user?.user?.role || session?.user.user.account_type
 
     const booksData = useFetchData(
         [queryKeys.getAllBooks, id],
-        `api/books/${id}`
+        `api/books/${id}`,
+        undefined,
+        undefined,
+        isPublic
     )
+
     const book: Book = booksData.data
     if (booksData.isFetching) return <Loader2 className="animate-spin" />
 
     return (
-        <div className="mx-auto max-w-4xl w-full">
+        <div className={isPublic ? "flex flex-col gap-4 w-full mx-auto max-w-5xl p-5" : "mx-auto max-w-4xl w-full"}>
             <div className="flex gap-5">
-                { // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                        loading="lazy"
-                        src={book?.image || "/book1.png"}
-                        alt={book?.title}
-                        width={100}
-                        height={100}
-                        className="h-48 w-48 object-cover flex items-center justify-center"
-                    />}
+                <ImagePreview
+                    src={book?.image || "/book.jpeg"}
+                    alt={book?.title}
+                    width={100}
+                    height={100}
+                    className="h-48 w-48 object-cover flex items-center justify-center"
+                />
                 <div className="flex flex-col gap-3">
                     <div className="flex justify-between items-center gap-1.5">
                         <div className="leading-3">
@@ -51,9 +53,8 @@ function BookDetails({ id }: { id: string }) {
                         </div>
                     </div>
                     <div>
-                        {role === ROLE.Member &&
-                            <Button variant={"secondary"}>Borrow</Button>
-                        }
+                        {(role === ROLE.Member || role === undefined) &&
+                            <Button variant={"secondary"}>Borrow</Button>}
                     </div>
                 </div>
             </div>

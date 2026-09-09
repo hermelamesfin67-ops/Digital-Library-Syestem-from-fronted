@@ -56,7 +56,7 @@ function BooksManagement() {
                             books?.map((b) => (
                                 <div key={b?.id} className="flex flex-col gap-3 p-3 bg-white shadow hover:shadow-md rounded-lg">
                                     <Link href={`/books/${b.id}`} className="flex items-center gap-5">
-                                        <ImagePreview src={b?.image || "/book1.png"} alt="book"
+                                        <ImagePreview src={b?.image || "/book.jpeg"} alt="book"
                                             width={100}
                                             height={100}
                                             className="w-20 h-28 object-cover hover:scale-105"
