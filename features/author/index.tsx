@@ -18,6 +18,7 @@ import ImagePreview from "../shared/image";
 import { Loader2, PencilIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { ROLE } from "@/constants";
+import { Button } from "@/components/ui/button";
 
 function AllAuthors() {
     const { data: session } = useSession()
@@ -37,8 +38,10 @@ function AllAuthors() {
             <PageHeader title="Author Management">
                 {role === ROLE.Librarian &&
                     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                        <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
-                            Add Author
+                        <DialogTrigger>
+                            <Button variant={"primary"} size={"lg"}>
+                                + Add Author
+                            </Button>
                         </DialogTrigger>
                         <DialogContent className={"md:min-w-lg w-full"}>
                             <AddAuthor setEditingAuthorId={setEditingAuthorId} setIsOpen={setIsOpen} />

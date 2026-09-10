@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import { ROLE } from "@/constants";
 import image from "../../public/book.jpeg"
 import Image from "next/image"
+import { Button } from "@/components/ui/button";
 
 function BooksManagement() {
     const queryClient = useQueryClient()
@@ -35,8 +36,10 @@ function BooksManagement() {
             <PageHeader title="Book Management">
                 {role === ROLE.Librarian &&
                     <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-                        <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
-                            Add Book
+                        <DialogTrigger>
+                            <Button variant={"primary"} size={"lg"}>
+                                + Add Book
+                            </Button>
                         </DialogTrigger>
                         <DialogContent className={"md:min-w-lg w-full"}>
                             <AddBook setEditingBookId={setEditingBookId} setIsOpen={setIsEditOpen} />
@@ -57,11 +60,13 @@ function BooksManagement() {
                             books?.map((b) => (
                                 <div key={b?.id} className="flex flex-col gap-3 p-3 bg-white shadow hover:shadow-md rounded-lg">
                                     <Link href={`/books/${b.id}`} className="flex items-center gap-5">
-                                        <Image src={b?.image || image} alt="book"
-                                            width={100}
-                                            height={100}
-                                            className="w-20 h-28 object-cover hover:scale-105"
-                                        />
+                                        <div className="w-20 h-28 overflow-hidden rounded">
+                                            <Image src={b?.image || image} alt="book"
+                                                width={100}
+                                                height={100}
+                                                className="w-20 h-28 object-cover rounded hover:scale-125 duration-100 delay-100"
+                                            />
+                                        </div>
                                         <div>
                                             <p className="capitalize text-cm font-bold">
                                                 {b?.title}

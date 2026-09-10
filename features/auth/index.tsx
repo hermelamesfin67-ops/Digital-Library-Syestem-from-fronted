@@ -35,7 +35,7 @@ function SingIn() {
   };
   return (
     <div className="flex items-center justify-center h-screen w-full">
-      <div className="flex flex-col gap-3 max-w-md w-full mx-auto p-10 border border-amber-50 rounded-lg">
+      <div className="flex flex-col gap-3 max-w-md w-full mx-auto p-10 rounded-md border bg-white">
         <div className="flex items-center justify-center gap-1 font-bold text-sm">
           <BookImageIcon />
           Digital Library

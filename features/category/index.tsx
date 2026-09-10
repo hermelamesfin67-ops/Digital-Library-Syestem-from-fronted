@@ -12,6 +12,7 @@ import ConfirmationModal from "../shared/confirmation-modal";
 import { useQueryClient } from "@tanstack/react-query";
 import { DeleteIcon, PencilIcon } from "lucide-react";
 import ImagePreview from "../shared/image";
+import { Button } from "@/components/ui/button";
 
 function AllCategories() {
     const queryClient = useQueryClient()
@@ -33,8 +34,10 @@ function AllCategories() {
             <PageHeader title="Category Management">
                 {role === ROLE.Librarian &&
                     <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-                        <DialogTrigger className={"bg-gradient p-1.5 px-2 rounded-md hover:cursor-pointer focus:cursor-pointer"}>
-                            Add Category
+                        <DialogTrigger>
+                            <Button variant={"primary"} size={"lg"}>
+                                + Add Category
+                            </Button>
                         </DialogTrigger>
                         <DialogContent className={"md:min-w-lg w-full"}>
                             <AddCategory setEditingCategoryId={setEditingCategoryId} setIsOpen={setIsEditOpen} />
@@ -65,10 +68,10 @@ function AllCategories() {
                                             <p className="capitalize text-cm font-bold">
                                                 {cat?.name}
                                             </p>
-                                            {cat?.Book_count &&
-                                                <p className="capitalize text-cm font-bold">
-                                                    {cat?.Book_count} Books
-                                                </p>
+                                            {cat?.Book_count ?
+                                                <p className="capitalize text-xs text-gray-500">
+                                                    {cat?.Book_count} Book{`${cat?.Book_count > 1 ? "s" : ""}`}
+                                                </p> : null
                                             }
 
                                         </div>

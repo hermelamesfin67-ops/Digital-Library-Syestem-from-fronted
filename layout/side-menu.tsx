@@ -13,7 +13,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 export const menus = [
-    { name: "Dashboard", url: "/", permission: ["Superuser", "Librarian", "Student"] },
+    { name: "Dashboard", url: "/dashboard", permission: ["Superuser", "Librarian", "Student"] },
     { name: "Books Management", url: "/books-management", permission: ["Superuser", "Librarian"] },
     { name: "All Books", url: "/books", permission: ["Student"] },
     { name: "Categories", url: "/categories", permission: ["Superuser", "Librarian"] },

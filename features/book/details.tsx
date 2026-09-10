@@ -27,14 +27,16 @@ function BookDetails({ id, isPublic }: { id: string, isPublic?: boolean }) {
 
     return (
         <div className={isPublic ? "flex flex-col gap-4 w-full mx-auto max-w-5xl p-5" : "mx-auto max-w-4xl w-full"}>
-            <div className="flex gap-5">
-                <Image
-                    src={book?.image || image}
-                    alt={book?.title}
-                    width={100}
-                    height={100}
-                    className="h-48 w-48 object-cover flex items-center justify-center"
-                />
+            <div className="grid gap-8 md:grid-cols-2">
+                <div className="aspect-square overflow-hidden rounded bg-gray-100">
+                    <Image
+                        src={book?.image || image}
+                        alt={book?.title}
+                        width={100}
+                        height={100}
+                        className="h-full w-full object-cover flex items-center justify-center"
+                    />
+                </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex justify-between items-center gap-1.5">
                         <div className="leading-3">
@@ -42,24 +44,24 @@ function BookDetails({ id, isPublic }: { id: string, isPublic?: boolean }) {
                             <h2 className="font-bold text-2xl capitalize">{book?.title}</h2>
                         </div>
                     </div>
-                    <div className="grid md:grid-cols-2 justify-between gap-5">
+                    <div className="grid justify-between gap-5">
                         <div>
                             <p className="text-sm text-[#3D3D3D]">Author: <span className="font-semibold">{book?.author_display}</span></p>
                             <p className="text-sm text-[#3D3D3D]">Category: <span className="font-semibold">{book?.category_display}</span></p>
                             <p className="text-sm text-[#3D3D3D]">Total Copies: <span className="font-semibold">{book?.total_copies}</span></p>
                             <p className="text-sm text-[#3D3D3D]">Available Copies: <span className="font-semibold">{book?.available_copies}</span></p>
                         </div>
-                        <div>
+                        {/* <div>
                             <p className="text-sm text-[#3D3D3D]">Publication Year: <span className="font-semibold">{"-"}</span></p>
                             <p className="text-sm text-[#3D3D3D]">Pages: <span className="font-semibold">{"-"}</span></p>
                             <p className="text-sm text-[#3D3D3D]">Rating: <span className="font-semibold">{"-"}</span></p>
-                        </div>
+                        </div> */}
                     </div>
                     <div>
                         {(role === ROLE.Student || role === undefined) &&
                             <Dialog>
                                 <DialogTrigger>
-                                    <Button variant={"secondary"}>
+                                    <Button size={"lg"} variant={"primary"}>
                                         Borrow
                                     </Button>
                                 </DialogTrigger>

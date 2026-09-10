@@ -36,12 +36,14 @@ function HomePage() {
                                 books?.map((b) => (
                                     <Link
                                         href={`/home/${b.id}`}
-                                        key={b.id} className="flex flex-col gap-1.5 p-5 bg-white shadow hover:shadow-md rounded-md">
-                                        <Image src={b?.image || image} alt="book"
-                                            width={100}
-                                            height={100}
-                                            className="w-full h-48 object-cover hover:scale-105"
-                                        />
+                                        key={b.id} className="block rounded border bg-white p-4 shadow hover:shadow-md">
+                                        <div className="w-full h-48 overflow-hidden rounded">
+                                            <Image src={b?.image || image} alt="book"
+                                                width={100}
+                                                height={100}
+                                                className="w-full h-48 object-cover rounded hover:scale-125 duration-100 delay-100"
+                                            />
+                                        </div>
                                         <p className="capitalize text-sm font-normal">
                                             {b?.title}
                                         </p>

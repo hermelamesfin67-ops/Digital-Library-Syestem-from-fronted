@@ -16,21 +16,25 @@ import Link from "next/link";
 function Header() {
     const { data: session } = useSession()
 
-    if (!session) return <div className="flex items-center justify-between gap-3 p-3">
-        <div className="flex items-center gap-1 font-bold text-sm">
-            <BookImageIcon />
-            Digital Library
+    if (!session) return <header className="border-b bg-white px-6 py-4">
+        <div className="mx-auto flex max-w-4xl items-center justify-between">
+            <div className="flex items-center gap-1 font-bold text-sm">
+                <BookImageIcon />
+                Digital Library
+            </div>
+            <Link href={routes.signIn}>
+                <Button
+                    type="submit"
+                    className={"w-fit"}
+                    variant={"primary"}
+                >
+                    Login
+                </Button>
+            </Link>
         </div>
-        <Link href={routes.signIn}>
-            <Button
-                type="submit"
-                className={"w-fit"}
-                variant={"primary"}
-            >
-                Login
-            </Button>
-        </Link>
-    </div>
+    </header>
+
+
 
     if (session) {
         return (

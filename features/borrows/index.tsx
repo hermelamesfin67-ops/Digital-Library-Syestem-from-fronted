@@ -28,9 +28,14 @@ function BorrowLists() {
                             <TableHead>List of Books</TableHead>
                         </TableRow>
                     </TableHeader>
+
                     <TableBody>
                         {borrowsData.isFetching ?
-                            <Loader2 className="animate-spin" />
+                            <TableRow>
+                                <TableCell colSpan={5} className="text-center py-8">
+                                    <Loader2 className="animate-spin inline" />
+                                </TableCell>
+                            </TableRow>
                             : borrows?.map((borrows, index) => (
                                 <TableRow key={index}>
                                     <TableCell className='capitalize'>
