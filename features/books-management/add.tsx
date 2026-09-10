@@ -67,7 +67,6 @@ function AddBook({ id, title, author, category, available_copies, total_copies, 
     }
 
     const bookHandler = async (values: CreateBookSchemaType) => {
-        console.log(values.category)
         const payload: PayloadType = {
             title: values.title,
             author_name: values.author,

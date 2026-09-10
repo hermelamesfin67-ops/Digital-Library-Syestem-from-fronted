@@ -21,7 +21,7 @@ function AllCategories() {
 
     const [isEditOpen, setIsEditOpen] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
-    const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null)
+    const [editingCategoryId, setEditingCategoryId] = useState("")
 
     const categoriesData = useFetchData(
         [queryKeys.getAllCategories],
@@ -58,7 +58,7 @@ function AllCategories() {
                             categories?.map((cat) => (
                                 <div key={cat?.id} className="flex flex-col gap-3 p-3 bg-white shadow hover:shadow-md rounded-lg">
                                     <div className="flex flex-col items-center gap-3">
-                                        <ImagePreview src={"/book-category.jpeg"} alt="book"
+                                        <ImagePreview src={cat?.icon || "/book-category.jpeg"} alt="book"
                                             width={100}
                                             height={100}
                                             className="w-20 h-20 object-cover hover:scale-105"
@@ -86,7 +86,7 @@ function AllCategories() {
                                                         setIsEditOpen(true)
                                                     } else {
                                                         setIsEditOpen(false)
-                                                        setEditingCategoryId(null)
+                                                        setEditingCategoryId("")
                                                     }
                                                 }}>
                                                 <DialogTrigger>
@@ -97,6 +97,7 @@ function AllCategories() {
                                                 <DialogContent className={"md:min-w-lg w-full"}>
                                                     <AddCategory
                                                         key={cat?.id}
+                                                        id={cat?.id}
                                                         name={cat?.name}
                                                         description={cat?.description}
                                                         image={cat?.icon}

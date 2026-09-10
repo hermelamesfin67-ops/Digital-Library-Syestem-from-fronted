@@ -12,6 +12,7 @@ import MobileSideMenu from "./mobile-side-menu"
 import { routes } from "@/lib/routes";
 import { BookImageIcon } from "lucide-react";
 import Link from "next/link";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 function Header() {
     const { data: session } = useSession()
@@ -44,7 +45,7 @@ function Header() {
 
                 <div className="flex justify-end w-full p-5">
                     <DropdownMenu>
-                        <DropdownMenuTrigger render={<Button variant="outline" />} className={"bg-transparent cursor-pointer"}>
+                        <DropdownMenuTrigger render={<Button variant="outline" />} className={"bg-transparent flex items-center gap-3 cursor-pointer border-none!"}>
                             <div className="flex flex-col">
                                 <p className="text-sm text-center font-semibold capitalize">
                                     {session?.user?.user?.username}
@@ -53,6 +54,10 @@ function Header() {
                                     {session?.user?.user?.role || session?.user.user.account_type}
                                 </p>
                             </div>
+                            <Avatar>
+                                {/* <AvatarImage src="/book-category.jpeg" /> */}
+                                <AvatarFallback className={"capitalize"}>{session?.user?.user?.username?.charAt(0)}</AvatarFallback>
+                            </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuGroup>

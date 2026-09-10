@@ -17,7 +17,7 @@ type Props = {
     description?: string
     image?: string
     setIsOpen: (arg: boolean) => void
-    setEditingCategoryId: (arg: number | null) => void
+    setEditingCategoryId: (arg: string) => void
 }
 function AddCategory({ id, name, description, setIsOpen, setEditingCategoryId }: Props) {
     const queryClient = useQueryClient()
@@ -30,18 +30,23 @@ function AddCategory({ id, name, description, setIsOpen, setEditingCategoryId }:
     }
 
     const authorHandler = async (values: CreateCategorySchemaType) => {
+        const payload: { name: string, description: string, icon?: File } = {
+            name: values.name,
+            description: values.description,
+        }
+        if (values.image) {
+            payload["icon"] = values.image as unknown as File
+        }
         try {
             await postMutation.mutateAsync({
-                url: id ? `api/categories/${id}` : `api/categories/`,
+                url: id ? `api/categories/${id}/` : `api/categories/`,
                 method: id ? "PUT" : "POST",
-                body: {
-                    name: values.name
-                },
+                body: payload,
                 onSuccess: () => {
                     toast.success(id ? "Category Updated Successfully" : "Category Added Successfully")
                     queryClient.invalidateQueries({ queryKey: [queryKeys.getAllCategories] })
                     setIsOpen(false)
-                    setEditingCategoryId(null)
+                    setEditingCategoryId("")
                 },
             });
         } catch (err) {

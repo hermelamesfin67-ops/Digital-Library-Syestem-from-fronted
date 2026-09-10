@@ -68,12 +68,16 @@ function AllAuthors() {
                             : author?.map((author) => (
                                 <TableRow key={author.id}>
                                     <TableCell>
-                                        <div className="flex items-center gap-1.5">
+                                        <div className="flex items-center text-sm capitalize gap-1.5">
                                             <ImagePreview src={author?.image} alt={author?.name} className="w-6 h-6 rounded-full" />
                                             {author?.name}
                                         </div>
                                     </TableCell>
-                                    <TableCell>{author?.biography}</TableCell>
+                                    <TableCell >
+                                        <div className="max-w-lg w-full text-wrap text-gray-500 text-xs">
+                                            {author?.biography}
+                                        </div>
+                                    </TableCell>
                                     <TableCell>{author?.book_count}</TableCell>
                                     <TableCell>
                                         {role === ROLE.Librarian &&
