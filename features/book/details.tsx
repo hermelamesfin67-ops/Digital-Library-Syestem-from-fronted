@@ -60,16 +60,18 @@ function BookDetails({ id, isPublic }: { id: string, isPublic?: boolean }) {
                     <div>
                         {(role === ROLE.Student || role === undefined) &&
                             <Dialog>
-                                <DialogTrigger>
-                                    <Button size={"lg"} variant={"primary"}>
-                                        Borrow
-                                    </Button>
+                                <DialogTrigger
+                                    render={
+                                        <Button size="lg" variant="primary" />
+                                    }
+                                >
+                                    Borrow
                                 </DialogTrigger>
-                                <DialogContent className={"md:min-w-lg w-full"}>
+
+                                <DialogContent className="md:min-w-lg w-full">
                                     <BorrowBook book={book} />
                                 </DialogContent>
                             </Dialog>
-
                         }
                     </div>
                 </div>

@@ -1,16 +1,10 @@
-"use client"
-import { routes } from "@/lib/routes"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { routes } from "@/lib/routes";
+import { getSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
-function Home() {
-    const router = useRouter()
-
-    useEffect(() => {
-        router.push(routes.home)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    return null
+async function Home() {
+    const session = await getSession();
+    redirect(session ? routes.home : routes.signIn);
 }
 
 export default Home

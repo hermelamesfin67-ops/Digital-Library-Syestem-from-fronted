@@ -3,14 +3,20 @@ import { queryKeys } from '@/api/query-keys'
 import { useFetchData } from '@/api/use-fetch-data'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Loader2 } from 'lucide-react'
-import { formatDate } from '@/utils'
+import { ROLE } from '@/constants'
+import { useSession } from 'next-auth/react'
+import Borrows from './borrows'
 
 function BorrowLists() {
+    const { data: session } = useSession()
+    const role = session?.user?.user?.role || session?.user.user.account_type
+
     const borrowsData = useFetchData(
         [queryKeys.getAllBorrows],
         "api/borrows/"
     )
     const borrows: Borrows[] = borrowsData.data
+
 
     return (
         <div className="flex flex-col gap-4">
@@ -26,6 +32,8 @@ function BorrowLists() {
                             <TableHead>Return Date</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>List of Books</TableHead>
+                            {role === ROLE.Librarian &&
+                                <TableHead>Actions</TableHead>}
                         </TableRow>
                     </TableHeader>
 
@@ -37,17 +45,7 @@ function BorrowLists() {
                                 </TableCell>
                             </TableRow>
                             : borrows?.map((borrows, index) => (
-                                <TableRow key={index}>
-                                    <TableCell className='capitalize'>
-                                        {borrows?.user_Display}
-                                    </TableCell>
-                                    <TableCell>{formatDate(borrows?.created_at)}</TableCell>
-                                    <TableCell>{formatDate(borrows?.due_date)}</TableCell>
-                                    <TableCell className='capitalize'>
-                                        {borrows?.status}
-                                    </TableCell>
-                                    <TableCell>{borrows?.items?.map((book) => `${book.book_title} (${book?.quantity})`)?.join(", ")}</TableCell>
-                                </TableRow>
+                                <Borrows borrows={borrows} key={index} />
                             ))}
                     </TableBody>
                 </Table>

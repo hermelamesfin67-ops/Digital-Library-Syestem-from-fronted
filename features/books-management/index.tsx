@@ -94,11 +94,11 @@ function BooksManagement() {
                                                         setEditingBookId(null)
                                                     }
                                                 }}>
-                                                <DialogTrigger>
+                                                <DialogTrigger render={
                                                     <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-gray-100 cursor-pointer">
                                                         <PencilIcon size={15} /> Edit
                                                     </div>
-                                                </DialogTrigger>
+                                                } />
                                                 <DialogContent className={"md:min-w-lg w-full"}>
                                                     <AddBook
                                                         key={b?.id}
@@ -116,11 +116,11 @@ function BooksManagement() {
                                             </Dialog>
 
                                             <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                                                <DialogTrigger>
+                                                <DialogTrigger render={
                                                     <div className="border p-3 flex items-center justify-center gap-1.5 hover:bg-gray-100 cursor-pointer">
                                                         <DeleteIcon size={15} /> Delete
                                                     </div>
-                                                </DialogTrigger>
+                                                } />
                                                 <DialogContent className={"md:min-w-lg w-full"}>
                                                     <ConfirmationModal
                                                         title="Delete this book"

@@ -56,12 +56,12 @@ function AllCategories() {
                         ))
                         : categories?.length ?
                             categories?.map((cat) => (
-                                <div key={cat?.id} className="flex flex-col gap-3 p-3 bg-white shadow hover:shadow-md rounded-lg">
+                                <div key={cat?.id} className="flex flex-col justify-between gap-3 p-3 bg-white shadow hover:shadow-md rounded-lg">
                                     <div className="flex flex-col items-center gap-3">
                                         <ImagePreview src={cat?.icon || "/book-category.jpeg"} alt="book"
                                             width={100}
                                             height={100}
-                                            className="w-20 h-20 object-cover hover:scale-105"
+                                            className="w-20 h-20 object-cover hover:scale-105 shrink-0"
                                         />
                                         <hr />
                                         <div>

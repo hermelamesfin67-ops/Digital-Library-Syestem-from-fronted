@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/auth-options";
 import AppProvider from "@/lib/app-provider";
 import { Toaster } from "sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -40,7 +41,9 @@ export default async function RootLayout({
         className="min-h-full flex flex-col">
         <Toaster position="top-center" visibleToasts={1} />
         <AppProvider session={session}>
-          {children}
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
         </AppProvider>
       </body>
     </html>

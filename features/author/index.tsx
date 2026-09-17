@@ -19,6 +19,7 @@ import { Loader2, PencilIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { ROLE } from "@/constants";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 function AllAuthors() {
     const { data: session } = useSession()
@@ -59,7 +60,8 @@ function AllAuthors() {
                             <TableHead>Author Name</TableHead>
                             <TableHead>Biography</TableHead>
                             <TableHead>Book count</TableHead>
-                            <TableHead>Actions</TableHead>
+                            {role === ROLE.Librarian &&
+                                <TableHead>Actions</TableHead>}
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -79,8 +81,8 @@ function AllAuthors() {
                                         </div>
                                     </TableCell>
                                     <TableCell>{author?.book_count}</TableCell>
-                                    <TableCell>
-                                        {role === ROLE.Librarian &&
+                                    {role === ROLE.Librarian &&
+                                        <TableCell>
                                             <Dialog
                                                 open={isOpen && editingAuthorId === author.id}
                                                 onOpenChange={(open) => {
@@ -93,9 +95,17 @@ function AllAuthors() {
                                                     }
                                                 }}>
                                                 <DialogTrigger>
-                                                    <div className="p-1.5 rounded-md hover:bg-gray-200 cursor-pointer">
-                                                        <PencilIcon size={15} />
-                                                    </div>
+                                                    <Tooltip>
+                                                        <TooltipTrigger>
+                                                            <div className="p-1.5 rounded-md hover:bg-gray-200 cursor-pointer">
+                                                                <PencilIcon size={15} />
+                                                            </div>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            <p>Edit Author</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+
                                                 </DialogTrigger>
                                                 <DialogContent className={"md:min-w-lg w-full"}>
                                                     <AddAuthor
@@ -109,8 +119,8 @@ function AllAuthors() {
                                                         setEditingAuthorId={setEditingAuthorId}
                                                     />
                                                 </DialogContent>
-                                            </Dialog>}
-                                    </TableCell>
+                                            </Dialog>
+                                        </TableCell>}
                                 </TableRow>
                             ))}
                     </TableBody>
