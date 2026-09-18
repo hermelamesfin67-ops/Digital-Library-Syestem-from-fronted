@@ -3,4 +3,5 @@ export const queryKeys = {
   getAllAuthors: "api/authors/",
   getAllCategories: "api/categories/",
   getAllBorrows: "api/borrows/",
+  getAllDashboard: "api/borrows/",
 };

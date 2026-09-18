@@ -38,3 +38,52 @@ type Borrows = {
     book_title: string;
   }[];
 };
+
+interface ChartItem {
+  name: string;
+  value: number;
+}
+
+interface LibraryStatsData {
+  total_users: number;
+  total_books: number;
+  total_copies: number;
+  available_copies: number;
+  borrowed: number;
+  overdue: number;
+  chart: ChartItem[];
+}
+
+interface BookRecord {
+  id: string;
+  isbn: string;
+  title: string;
+  author: string;
+  category: string;
+  totalCopies: number;
+  availableCopies: number;
+  borrowedCopies: number;
+  overdueCopies: number;
+  location: string;
+}
+
+interface UserRecord {
+  id: string;
+  name: string;
+  email: string;
+  role: "Student" | "Faculty" | "Researcher" | "Community Member";
+  activeLoans: number;
+  overdueLoans: number;
+  joinedDate: string;
+  cardId: string;
+}
+
+interface CirculationActivity {
+  id: string;
+  bookTitle: string;
+  userName: string;
+  action: "Checkout" | "Returned" | "Renewed";
+  timestamp: string;
+  dueDate: string;
+  status: "active" | "returned" | "overdue";
+}
