@@ -3,7 +3,7 @@ import { queryKeys } from "@/api/query-keys"
 import { useFetchData } from "@/api/use-fetch-data"
 import { Button } from "@/components/ui/button"
 import { ROLE } from "@/constants"
-import { Loader2 } from "lucide-react"
+import { BookmarkCheck, CheckCircle2, Loader2 } from "lucide-react"
 import { useSession } from "next-auth/react"
 import image from "../../public/book.jpeg"
 import Image from "next/image"
@@ -23,6 +23,7 @@ function BookDetails({ id, isPublic }: { id: string, isPublic?: boolean }) {
     )
 
     const book: Book = booksData.data
+    const borrowedCopies = Number(book?.total_copies) - Number(book?.available_copies)
     if (booksData.isFetching) return <Loader2 className="animate-spin" />
 
     return (
@@ -37,32 +38,70 @@ function BookDetails({ id, isPublic }: { id: string, isPublic?: boolean }) {
                         className="h-full w-full object-cover flex items-center justify-center"
                     />
                 </div>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 w-full">
                     <div className="flex justify-between items-center gap-1.5">
                         <div className="leading-3">
-                            <span className="text-xs text-[#626262]">Book</span>
-                            <h2 className="font-bold text-2xl capitalize">{book?.title}</h2>
+                            <span className="text-[10px]">
+                                Book
+                            </span>
+                            <h3
+                                className="text-base sm:text-lg capitalize font-bold text-stone-900 leading-snug hover:text-blue-600 transition-colors cursor-pointer line-clamp-2"
+                                title={book.title}
+                            >
+                                {book.title}
+                            </h3>
                         </div>
                     </div>
-                    <div className="grid justify-between gap-5">
+                    <div className="flex flex-col gap-5 w-full">
                         <div>
-                            <p className="text-sm text-[#3D3D3D]">Author: <span className="font-semibold">{book?.author_display}</span></p>
-                            <p className="text-sm text-[#3D3D3D]">Category: <span className="font-semibold">{book?.category_display}</span></p>
-                            <p className="text-sm text-[#3D3D3D]">Total Copies: <span className="font-semibold">{book?.total_copies}</span></p>
-                            <p className="text-sm text-[#3D3D3D]">Available Copies: <span className="font-semibold">{book?.available_copies}</span></p>
+                            <p className="text-xs font-medium text-stone-600 mt-1">
+                                By {book.author_display}
+                            </p>
+                            <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                                <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-stone-100 text-stone-700 border border-stone-200/80">
+                                    {book.category_display}
+                                </span>
+                            </div>
                         </div>
-                        {/* <div>
-                            <p className="text-sm text-[#3D3D3D]">Publication Year: <span className="font-semibold">{"-"}</span></p>
-                            <p className="text-sm text-[#3D3D3D]">Pages: <span className="font-semibold">{"-"}</span></p>
-                            <p className="text-sm text-[#3D3D3D]">Rating: <span className="font-semibold">{"-"}</span></p>
-                        </div> */}
+                        <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200/80 space-y-2 w-full max-w-sm">
+                            <div className="flex items-center justify-between text-xs">
+                                <span className="font-semibold text-stone-700">Shelf Availability</span>
+                                <span className="font-bold text-stone-900">
+                                    {book?.available_copies} of {book?.total_copies} Available
+                                </span>
+                            </div>
+                            <div className="w-full bg-stone-200 h-2 rounded-full overflow-hidden flex">
+                                <div
+                                    className="bg-emerald-600 h-full"
+                                    style={{
+                                        width: `${Number(book?.total_copies) > 0 ? (Number(book?.available_copies) / Number(book?.total_copies)) * 100 : 0}%`,
+                                    }}
+                                />
+                                <div
+                                    className="bg-amber-500 h-full"
+                                    style={{
+                                        width: `${Number(book?.total_copies) > 0 ? (borrowedCopies / Number(book?.total_copies)) * 100 : 0}%`,
+                                    }}
+                                />
+                            </div>
+                            <div className="flex items-center justify-between text-[11px] text-stone-500">
+                                <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                                    <CheckCircle2 className="w-3 h-3" />
+                                    {book?.available_copies} on shelves
+                                </span>
+                                <span className="text-amber-700 font-medium flex items-center gap-1">
+                                    <BookmarkCheck className="w-3 h-3" />
+                                    {borrowedCopies} on active loans
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         {(role === ROLE.Student || role === undefined) &&
                             <Dialog>
                                 <DialogTrigger
                                     render={
-                                        <Button size="lg" variant="primary" />
+                                        <Button size="sm" variant="primary" />
                                     }
                                 >
                                     Borrow

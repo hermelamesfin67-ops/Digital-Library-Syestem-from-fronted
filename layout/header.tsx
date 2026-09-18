@@ -19,10 +19,12 @@ function Header() {
 
     if (!session) return <header className="border-b bg-white px-6 py-4">
         <div className="mx-auto flex max-w-4xl items-center justify-between">
-            <div className="flex items-center gap-1 font-bold text-sm">
-                <BookImageIcon />
-                Digital Library
+            <div className="w-8 h-8 rounded-lg bg-stone-100 border border-stone-200/90 text-stone-900 flex items-center justify-center group-hover:bg-stone-900 group-hover:text-white transition-colors shadow-2xs">
+                <BookImageIcon className="w-7 h-7" />
             </div>
+            <span className="text-base sm:text-lg font-bold text-stone-900 tracking-tight">
+                Digital Library
+            </span>
             <Link href={routes.signIn}>
                 <Button
                     type="submit"
